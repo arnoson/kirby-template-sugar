@@ -1,0 +1,24 @@
+{
+  "name": "kirby-snippet-templating",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^2.8.7",
+    "tsx": "^3.12.6"
+  },
+  "dependencies": {
+    "@types/node": "^18.15.11",
+    "chokidar": "^3.5.3",
+    "htmlparser2": "^8.0.2",
+    "magic-string": "^0.30.0",
+    "node-html-parser": "^6.1.5",
+    "parse5": "^7.1.2"
+  }
+}
