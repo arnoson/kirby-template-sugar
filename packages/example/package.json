@@ -6,7 +6,9 @@
   },
   "dependencies": {
     "vite": "^4.2.1",
-    "vite-plugin-kirby": "^0.1.4",
     "vite-plugin-kirby-template-sugar": "workspace:*"
+  },
+  "devDependencies": {
+    "vite-plugin-kirby": "^0.1.4"
   }
 }

@@ -1,7 +1,10 @@
 kirby
 vendor
 dist
-site/plugins
+site/plugins/*
+site/templates/*
+site/snippets/*
+.dev
 
 # System files
 # ------------

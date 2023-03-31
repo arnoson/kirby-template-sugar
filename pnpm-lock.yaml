@@ -6,18 +6,16 @@ importers:
 
   packages/example:
     dependencies:
-      kirby-template-sugar:
-        specifier: workspace:*
-        version: link:../npm-package
       vite:
         specifier: ^4.2.1
         version: 4.2.1
-      vite-plugin-kirby:
-        specifier: ^0.1.4
-        version: 0.1.4
       vite-plugin-kirby-template-sugar:
         specifier: workspace:*
         version: link:../vite-plugin
+    devDependencies:
+      vite-plugin-kirby:
+        specifier: ^0.1.4
+        version: 0.1.4
 
   packages/npm-package:
     dependencies:
@@ -1030,14 +1028,14 @@ packages:
     resolution: {integrity: sha512-5UyTbBYhNTD+9Izqggtb5d3RxjGTx4uKLxlM2QzWR5skO8IZoj7d+1Z5JVVJ+oURsP4ue0JY+TpT2VWjCfZANQ==}
     dependencies:
       vite-plugin-live-reload: 3.0.2
-    dev: false
+    dev: true
 
   /vite-plugin-live-reload@3.0.2:
     resolution: {integrity: sha512-7QprEPLN9f4J9ljnovzoe2xmkTKTEn/QpxpwSmvbb2MtRQyWi0c0Zg3+s3cBhxHaKe9eMYHUG4OQGpCYwFwdaw==}
     dependencies:
       chokidar: 3.5.3
       picocolors: 1.0.0
-    dev: false
+    dev: true
 
   /vite@4.2.1:
     resolution: {integrity: sha512-7MKhqdy0ISo4wnvwtqZkjke6XN4taqQ2TBaTccLIpOKv7Vp2h4Y+NpmWCnGDeSvvn45KxvWgGyb0MkHvY1vgbg==}

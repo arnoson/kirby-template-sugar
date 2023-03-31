@@ -1,0 +1,11 @@
+<nav>
+  <ul>
+    <?php foreach($pages as $page): ?>
+      <li>
+        <snippet:link @href="<?= $page->url() ?>">
+          <?= $page->title() ?>
+        </snippet:link>
+      </li>
+    <?php endforeach ?>
+  </ul>
+</nav>

@@ -5,8 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <?= vite()->css() ?>
+  <?= vite(null, ['defer' => true])->js() ?>
 </head>
 <body>
-  <snippet:menu>Hallo</snippet:menu>
+  <h1><?= $site->title() ?></h1>
+  <snippet:menu
+    @pages="<?= $site->children() ?>"
+  />
 </body>
 </html>
