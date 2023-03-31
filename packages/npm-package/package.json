@@ -1,6 +1,14 @@
 {
+  "name": "kirby-template-sugar",
+  "type": "module",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "bin": {
+    "kirby-template-sugar": "./dist/cli.js"
+  },
   "scripts": {
-    "dev": "npx tsx watch src/dev.ts"
+    "dev": "npx tsx watch src/dev.ts",
+    "build": "tsup ./src/index.ts ./src/cli.ts --clean --dts --minify --format esm"
   },
   "dependencies": {
     "cac": "^6.7.14",
@@ -12,6 +20,8 @@
     "tsx": "^3.12.6"
   },
   "devDependencies": {
-    "@types/node": "^18.15.11"
+    "@types/node": "^18.15.11",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.3"
   }
 }
