@@ -1,6 +1,7 @@
 kirby
 vendor
 dist
+site/plugins
 
 # System files
 # ------------
