@@ -12,14 +12,17 @@ export default (pattern: string, options: Options = {}): Plugin => {
       root = config.root
     },
 
-    configureServer({ config: { root } }) {
+    configureServer({ ws, config: { root } }) {
       console.log('watch files ', pattern)
-      watchFiles(pattern, options)
+
+      const onTransform = (path: string) =>
+        ws.send({ type: 'full-reload', path })
+      watchFiles(pattern, { root, ...options, onTransform })
     },
 
     buildStart() {
       console.log('transform files ', pattern)
-      transformFiles(pattern, options)
+      transformFiles(pattern, { root, ...options })
     },
   } as Plugin
 }
