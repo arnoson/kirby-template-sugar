@@ -3,7 +3,7 @@ import { transformFile } from './transformFile'
 import { Options } from './types'
 
 export const watchFiles = (paths: string | string[], options: Options = {}) => {
-  const watcher = createWatcher(paths)
+  const watcher = createWatcher(paths, { cwd: options.root })
   const handleFile = (file: string) => transformFile(file, options)
 
   watcher.on('change', handleFile)
