@@ -1,34 +1,11 @@
 import { Parser } from 'htmlparser2'
 import MagicString from 'magic-string'
-
-const entriesToPhp = (entries: Record<string, any>) =>
-  entries.map(([key, value]) => `'${key}' => ${value}`).join(', ')
-
-const resolveValue = (value: string) => {
-  const match = value.match(/^<\?=(.* )\?>$/s)
-  const valueIsPhp = !!match
-  return valueIsPhp ? match[1].trim() : `'${value}'`
-}
-
-const parseLine = (line: string, attributes: Record<string, string>) => {
-  const matches = line.match(/[\s\S](@?[\w-]+)="/g)
-  if (!matches) return
-
-  const props = []
-  const attr = []
-  const indent = line.match(/^[\s\t]*/)?.[0] ?? ''
-
-  for (const match of matches) {
-    const key = match.slice(0, -2).trim()
-    const isProp = key.startsWith('@')
-    const value = resolveValue(attributes[key])
-    const name = isProp ? key.slice(1) : key
-    if (isProp) props.push([name, value])
-    else attr.push([name, value])
-  }
-
-  return { props, attr, indent }
-}
+import {
+  getAttributePosition,
+  getIndentation,
+  joinLines,
+  resolveValue,
+} from './utils'
 
 const openSnippet = (
   tagHtml: string,
@@ -37,56 +14,31 @@ const openSnippet = (
   attributes: Record<string, string>
 ) => {
   const name = tagName.slice(8)
-  const lines = tagHtml.split('\n')
-  const data: string[] = []
-  const allAttr = []
+  const inputLines = tagHtml.split('\n')
+  const lastLineIndex = inputLines.length - 1
 
-  let lastIndent = ''
-
-  for (const [i, line] of lines.entries()) {
-    const { props, attr, indent } = parseLine(line, attributes) ?? {}
-    const isFirstLine = i === 0
-    const isLastLine = i === lines.length - 1
-
-    lastIndent = indent ?? lastIndent
-
-    if (attr) allAttr.push(...attr)
-
-    if (isLastLine && !props?.length) {
-      if (allAttr.length)
-        data.push(`${lastIndent}${`'attr' => [${entriesToPhp(allAttr)}]`}`)
-      else data.push('')
-      continue
-    }
-
-    if (!props?.length && !attr?.length) {
-      data.push('')
-      continue
-    }
-
-    if (!props.length) {
-      if (isFirstLine) {
-        data.push('')
-      } else {
-        const keys = attr.map(([key]) => `[${key}]`)
-        data.push(`${indent}// ${keys.join(' ')}`)
-      }
-      continue
-    }
-
-    if (isLastLine && allAttr.length) {
-      props.push(['attr', `[${entriesToPhp(allAttr)}]`])
-    }
-
-    const comma = isLastLine ? '' : ','
-    data.push(`${indent}${entriesToPhp(props)}${comma}`)
+  const firstLine = {
+    text: `<?php snippet('${name}', __snippetData([`,
+    line: 0,
   }
 
-  const args = [`'${name}'`]
-  if (data.length) args.push(`[${data.join('\n')}]`)
-  if (!isSelfClosing) args.push('slots: true')
+  const attributeEntries = Object.entries(attributes)
+  const attributeLines = attributeEntries.map(([key, value], index) => {
+    const { line, indentation } = getAttributePosition(key, tagHtml)
+    const isLast = index === attributeEntries.length - 1
+    const comma = isLast ? '' : ','
+    const text = `${indentation}'${key}' => ${resolveValue(value)}${comma}`
+    return { text, line }
+  })
 
-  return `<?php snippet(${args.join(', ')}); ?>`
+  const indentation = getIndentation(inputLines[lastLineIndex])
+  const slots = isSelfClosing ? '' : ', slots: true'
+  const lastLine = {
+    text: `${indentation}])${slots}); ?>`,
+    line: lastLineIndex,
+  }
+
+  return joinLines([firstLine, ...attributeLines, lastLine])
 }
 
 const closeSnippet = (tagName: string) => {
