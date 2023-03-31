@@ -16,13 +16,20 @@ const openSnippet = (
   const name = tagName.slice(8)
   const inputLines = tagHtml.split('\n')
   const lastLineIndex = inputLines.length - 1
+  const attributeEntries = Object.entries(attributes)
+  const slots = isSelfClosing ? '' : ', slots: true'
+
+  // Take a shortcut if there are no attributes to render
+  // Todo: make sure line length stays the same.
+  if (!attributeEntries.length) {
+    return `<?php snippet('${name}'${slots}); ?>`
+  }
 
   const firstLine = {
     text: `<?php snippet('${name}', __snippetData([`,
     line: 0,
   }
 
-  const attributeEntries = Object.entries(attributes)
   const attributeLines = attributeEntries.map(([key, value], index) => {
     const { line, indentation } = getAttributePosition(key, tagHtml)
     const isLast = index === attributeEntries.length - 1
@@ -32,7 +39,6 @@ const openSnippet = (
   })
 
   const indentation = getIndentation(inputLines[lastLineIndex])
-  const slots = isSelfClosing ? '' : ', slots: true'
   const lastLine = {
     text: `${indentation}])${slots}); ?>`,
     line: lastLineIndex,

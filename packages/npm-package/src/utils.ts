@@ -1,3 +1,5 @@
+import { basename, dirname, extname, join } from 'path'
+
 /**
  * Join the provided lines, while each line provides a starting line number.
  * Create missing lines and handle lines that end/start on the same line number.
@@ -46,3 +48,9 @@ export const resolveValue = (value: string) => {
   const valueIsPhp = !!match
   return valueIsPhp ? match[1].trim() : `'${value}'`
 }
+
+export const changeFileExtension = (filename: string, newExtension: string) =>
+  join(
+    dirname(filename),
+    `${basename(filename, extname(filename))}${newExtension}`
+  )
