@@ -44,7 +44,7 @@ export const getAttributePosition = (
 }
 
 export const resolveValue = (value: string) => {
-  const match = value.match(/^<\?=(.*)\?>$/s)
+  const match = value.match(/^<\?(?:php|=)?(.*)\?>$/s)
   const valueIsPhp = !!match
   return valueIsPhp ? match[1].trim() : `'${value}'`
 }
