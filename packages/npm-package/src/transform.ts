@@ -7,7 +7,7 @@ import {
   resolveValue,
 } from './utils'
 
-const controlStructures = ['if', 'while', 'for', 'foreach', 'switch']
+const controlStructures = ['if', 'while', 'for', 'foreach']
 const shortTagRegexp = new RegExp(
   `<\\?(?=\\s*(${[
     ...controlStructures.map((v) => `${v}\\s*\\(`),
