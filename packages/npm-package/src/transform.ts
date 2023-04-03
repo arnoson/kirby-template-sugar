@@ -7,6 +7,17 @@ import {
   resolveValue,
 } from './utils'
 
+const controlStructures = ['if', 'while', 'for', 'foreach', 'switch']
+const shortTagRegexp = new RegExp(
+  `<\\?(?=\\s*(${[
+    ...controlStructures.map((v) => `${v}\\s*\\(`),
+    ...controlStructures.map((v) => `end${v}`),
+  ].join('|')}))`,
+  'g'
+)
+const transformShortTags = (string: string): string =>
+  string.replace(shortTagRegexp, '<?php')
+
 const openSnippet = (
   tagHtml: string,
   tagName: string,
@@ -98,5 +109,5 @@ export const transform = (input: string) => {
 
   parser.write(input)
   parser.end()
-  return output.toString()
+  return transformShortTags(output.toString())
 }
