@@ -7,7 +7,8 @@
     "kirby-template-sugar": "./dist/cli.js"
   },
   "scripts": {
-    "dev": "npx tsx watch src/dev.ts",
+    "dev-example": "npx tsx watch src/dev.ts",
+    "dev": "pnpm build --watch",
     "build": "tsup ./src/index.ts ./src/cli.ts --clean --dts --minify --format esm"
   },
   "dependencies": {
