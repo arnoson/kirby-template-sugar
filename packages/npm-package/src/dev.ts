@@ -1,5 +1,5 @@
 import { transformFiles } from './transformFile'
 import { watchFiles } from './watchFiles'
 
-watchFiles('**/*.kirby', { root: 'fu', outDir: '../xxx' })
+watchFiles('**/*.kirby', { outDir: 'transformed' })
 // transformFiles('**/*.kirby', { root: 'fu', outDir: '../xxx' })
