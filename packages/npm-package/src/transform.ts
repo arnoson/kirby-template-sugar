@@ -2,17 +2,6 @@ import { Parser } from 'htmlparser2'
 import MagicString from 'magic-string'
 import { layout, slot, snippet } from './transformers'
 
-const controlStructures = ['if', 'while', 'for', 'foreach']
-const shortTagRegexp = new RegExp(
-  `<\\?(?=\\s*(${[
-    ...controlStructures.map((v) => `${v}\\s*\\(`),
-    ...controlStructures.map((v) => `end${v}`),
-  ].join('|')}))`,
-  'g'
-)
-const transformShortTags = (string: string): string =>
-  string.replace(shortTagRegexp, '<?php')
-
 export const transform = (input: string) => {
   const output = new MagicString(input)
   const transformers = [snippet, slot, layout]
@@ -45,5 +34,5 @@ export const transform = (input: string) => {
 
   parser.write(input)
   parser.end()
-  return transformShortTags(output.toString())
+  return output.toString()
 }
