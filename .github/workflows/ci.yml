@@ -26,8 +26,16 @@ jobs:
           node-version: 18
           cache: pnpm
 
-      - name: Install Dependencies
+      - name: Install NPM Dependencies
         run: pnpm i
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Install composer Dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
 
       - name: Test
         run: pnpm test
