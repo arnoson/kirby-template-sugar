@@ -28,9 +28,7 @@ instead of this:
     <h2>Kirby Template Sugar</h2>
   <?php endslot(); ?>
   <?php slot(); ?>
-    <?php snippet('link', [
-      'url' => 'github.com/arnoson/kirby-template-sugar'
-    ], slots: true); ?>
+    <?php snippet('link', ['url' => 'github.com/arnoson/kirby-template-sugar'], slots: true); ?>
       <i>Read more ...</i>
     <?php endsnippet(); ?>
   <?php endslot(); ?>
@@ -45,19 +43,19 @@ The templates can either be compiled via the `kirby-template-sugar` CLI or with 
 
 ## Syntax
 
-### Snippet
+### Snippets
 
 Snippets can have slots or be self-closing:
 
 <table>
 <tr>
-<td>With Sugar</td>
-<td>Compiled</td>
+<th width="500px">With Sugar</th>
+<th width="500px">Compiled</th>
 </tr>
 <tr>
-<td>
+<td valign="top">
 
-```html+php
+```html
 <snippet:my-snippet>
   <slot:title>
     Hello
@@ -68,9 +66,9 @@ Snippets can have slots or be self-closing:
 ```
 
 </td>
-<td>
+<td valign="top">
 
-```html+php
+```php
 <?php snippet('my-snippet', slots: true); ?>
   <?php slot('title'); ?>
     Hello
@@ -83,3 +81,70 @@ Snippets can have slots or be self-closing:
 </td>
 </tr>
 </table>
+
+### Props and attributes
+
+Snippets can have `props` which are directly passed to snippet and attributes, which are grouped into an `$attr` variable passed to the snippet alongside the props.
+
+<table>
+<tr>
+<th width="500px">With Sugar</th>
+<th width="500px">Compiled</th>
+</tr>
+<tr>
+<td valign="top">
+
+```html
+<snippet:menu
+  @open="<? true ?>"
+  @items="<? $site->children()->listed() ?>"
+  class="bg-red"
+  aria-label="Main Menu"
+/>
+```
+
+</td>
+<td valign="top">
+
+```php
+<?php snippet('menu', [
+  'open' => true,
+  'items' => $site->children()->listed(),
+  'attr' => [
+    'class' => 'bg-red',
+    'aria-label' => 'Main Menu'
+  ]
+]); ?>
+```
+
+</td>
+</tr>
+</table>
+
+Well ... actually the compiled code looks like this. To make the debugging easier, line numbers will stay the same:
+```php
+<?php snippet('menu', __snippetData([
+  '@open' => true,
+  '@items' => $site->children()->listed(),
+  'class' => 'bg-red',
+  'aria-label' => 'Main Menu'
+])); ?>
+```
+
+This makes it super easy to implement a snippet like this:
+
+```php
+// snippets/menu.php
+<nav <?= attr($attr) ?>>
+  <?php foreach ($items as $item) { /* ... */ } ?>
+</nav>
+```
+
+Or even better with @fabianmichael's fantastic [kirby-template-attributes](https://github.com/fabianmichael/kirby-template-attributes)
+
+```php
+// snippets/menu.php
+<nav <?= classes('menu', ['menu--open' => $open])->merge($attr) ?>>
+  <?php foreach ($items as $item) { /* ... */ } ?>
+</nav>
+```
