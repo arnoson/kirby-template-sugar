@@ -1,4 +1,4 @@
-import kirbyTemplateSugar from 'vite-plugin-kirby-template-sugar'
+import kirbyTemplateSugar from '../../packages/vite-plugin'
 import kirby from 'vite-plugin-kirby'
 import { defineConfig } from 'vite'
 
@@ -12,7 +12,7 @@ export default defineConfig({
 
   build: {
     rollupOptions: {
-      input: 'src/index.js',
+      input: 'index.js',
     },
   },
 })

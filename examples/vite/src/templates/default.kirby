@@ -10,10 +10,10 @@
 </head>
 <body>
   <h1><?= $site->title() ?></h1>
-  <? if (true): ?>
+  <?php if (true): ?>
     <snippet:menu
       @pages="<? $site->children() ?>"
     ></snippet:menu>
-  <? endif; ?>
+  <?php endif; ?>
 </body>
 </html>
