@@ -9,7 +9,9 @@
   "scripts": {
     "dev-example": "npx tsx watch src/dev.ts",
     "dev": "pnpm build --watch",
-    "build": "tsup ./src/index.ts ./src/cli.ts --clean --dts --minify --format esm"
+    "build": "tsup ./src/index.ts ./src/cli.ts --clean --dts --minify --format esm",
+    "test": "vitest",
+    "test:dev": "vitest watch"
   },
   "dependencies": {
     "cac": "^6.7.14",
@@ -23,6 +25,7 @@
   "devDependencies": {
     "@types/node": "^18.15.11",
     "tsup": "^6.7.0",
-    "typescript": "^5.0.3"
+    "typescript": "^5.0.3",
+    "vitest": "^0.29.8"
   }
 }
