@@ -122,14 +122,39 @@ Snippets can have `props` which are directly passed to snippet and attributes, w
 </table>
 
 Well ... actually the compiled code looks like this. To make the debugging easier, line numbers will stay the same:
+
+<table>
+<tr>
+<th width="500px">With Sugar</th>
+<th width="500px">Compiled</th>
+</tr>
+<tr>
+<td valign="top">
+
+```html
+<snippet:menu
+  @open="<? true ?>"
+  @items="<? $site->children() ?>"
+  class="bg-red"
+  aria-label="Main Menu"
+/>
+```
+
+</td>
+<td valign="top">
+
 ```php
 <?php snippet('menu', __snippetData([
   '@open' => true,
-  '@items' => $site->children()->listed(),
+  '@items' => $site->children(),
   'class' => 'bg-red',
   'aria-label' => 'Main Menu'
 ])); ?>
 ```
+
+</td>
+</tr>
+</table>
 
 This makes it super easy to implement a snippet like this:
 
