@@ -12,9 +12,10 @@ const cli = cac()
 cli
   .command('<input> [outFile]')
   .option('--watch', 'watch', { default: false })
+  .option('--root [root]', 'root directory', { default: './' })
   .option('--outDir [outDir]', 'output directory', { default: './' })
-  .action(async (input: string, outFile: string, { watch, outDir }) => {
-    const options: Options = { outFile, outDir }
+  .action(async (input: string, outFile: string, { watch, outDir, root }) => {
+    const options: Options = { outFile, outDir, root }
 
     if (outDir && !existsSync(outDir)) await mkdir(outDir, { recursive: true })
 
