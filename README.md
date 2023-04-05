@@ -4,14 +4,6 @@ Kirby Template Sugar is a small template compiler that adds some syntactic sugar
 
 Kirby's new snippets with slots enable you to adapt a component-based workflow like in laravel blade templates or javascript frameworks like Vue. But the syntax can be verbose. So with some template sugar you can write this:
 
-<table>
-<tr>
-<td>With Sugar</td>
-<td>Without</td>
-</tr>
-<tr>
-<td>
-
 ```html+php
 <snippet:card @rounded="<? true ?>" class="bg-yellow" id="my-card">
   <slot:icon>🍬</slot:icon>
@@ -26,8 +18,7 @@ Kirby's new snippets with slots enable you to adapt a component-based workflow l
 </snippet:card>
 ```
 
-</td>
-<td>
+instead of this:
 
 ```php+html
 <?php snippet('card', [
@@ -48,10 +39,6 @@ Kirby's new snippets with slots enable you to adapt a component-based workflow l
 <?php endsnippet(); ?>
 ```
 
-</td>
-</tr>
-</table>
-
 ## How does it work
 
 On order to get this to work, your original template file has to be compiled to normal php, similar to how other template languages (like laravel blade) work. The difference with Kirby Template Sugar is that it is still just 99% html+php but with the added `<snippet:name>` and `<slot>` sugar. So you still have syntax highlighting, intellisense, ...
@@ -64,10 +51,37 @@ The templates can either be compiled via the `kirby-template-sugar` CLI or with 
 
 Snippets can have slots or be self-closing:
 
+<table>
+<tr>
+<td>With Sugar</td>
+<td>Compiled</td>
+</tr>
+<tr>
+<td>
+
 ```html+php
 <snippet:my-snippet>
-  <slot:title>Hello</slot:title>
+  <slot:title>
+    Hello
+  </slot:title>
 </snippet:my-snippet>
 
 <snippet:my-snippet />
 ```
+
+</td>
+<td>
+
+```html+php
+<?php snippet('my-snippet', slots: true); ?>
+  <?php slot('title'); ?>
+    Hello
+  <?php endslot(/* title */); ?>
+<?php endsnippet(/* my-snippet */); ?>
+
+<?php snippet('my-snippet'); ?>
+```
+
+</td>
+</tr>
+</table>
