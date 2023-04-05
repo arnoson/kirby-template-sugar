@@ -1,6 +1,14 @@
 {
   "name": "kirby-template-sugar",
+  "version": "0.0.0",
   "scripts": {
-    "dev": "pnpm -r dev"
+    "dev": "pnpm -r dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "check-types": "tsc --noEmit",
+    "release": "bumpp -r"
+  },
+  "devDependencies": {
+    "bumpp": "^9.1.0"
   }
 }

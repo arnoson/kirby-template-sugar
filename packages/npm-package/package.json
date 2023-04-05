@@ -10,7 +10,7 @@
     "dev-example": "npx tsx watch src/dev.ts",
     "dev": "pnpm build --watch",
     "build": "tsup ./src/index.ts ./src/cli.ts --clean --dts --minify --format esm",
-    "test": "vitest",
+    "test": "vitest run",
     "test:dev": "vitest watch"
   },
   "dependencies": {
