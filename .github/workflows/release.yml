@@ -15,6 +15,8 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
+        with:
+          version: latest
 
       - name: Set node
         uses: actions/setup-node@v3
@@ -22,8 +24,6 @@ jobs:
           node-version: 18
           cache: pnpm
           registry-url: 'https://registry.npmjs.org'
-
-      - run: corepack enable
 
       - name: Install
         run: pnpm i
