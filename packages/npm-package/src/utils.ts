@@ -32,15 +32,17 @@ export const joinLines = (lines: { text: string; line: number }[]) => {
 export const getIndentation = (line: string): string =>
   line.match(/^[ \t]+/)?.[0] || ''
 
-export const getAttributePosition = (
-  key: string,
-  tagHtml: string
-): { line: number; indentation: string } => {
-  const index = tagHtml.indexOf(`${key}="`)
-  const lines = tagHtml.substring(0, index).split('\n')
+export const getAttributeInfo = (key: string, html: string) => {
+  // `key` is parsed lowercase, so we have to search in the lowercase version
+  // of the html.
+  const index = html.toLowerCase().indexOf(`${key}="`)
+  const lines = html.substring(0, index).split('\n')
   const indentation = getIndentation(lines[lines.length - 1])
   const line = lines.length - 1
-  return { line, indentation }
+
+  // Extract the case sensitive name from the non-lowercase html.
+  const name = html.substring(index, index + key.length)
+  return { line, indentation, name }
 }
 
 export const resolveValue = (value: string) => {

@@ -1,5 +1,5 @@
 import {
-  getAttributePosition,
+  getAttributeInfo,
   getIndentation,
   joinLines,
   resolveValue,
@@ -31,10 +31,10 @@ const transformOpenTag = (
   }
 
   const attributeLines = attributeEntries.map(([key, value], index) => {
-    const { line, indentation } = getAttributePosition(key, html)
+    const { line, indentation, name } = getAttributeInfo(key, html)
     const isLast = index === attributeEntries.length - 1
     const comma = isLast ? '' : ','
-    const text = `${indentation}'${key}' => ${resolveValue(value)}${comma}`
+    const text = `${indentation}'${name}' => ${resolveValue(value)}${comma}`
     return { text, line }
   })
 

@@ -1,5 +1,5 @@
 import {
-  getAttributePosition,
+  getAttributeInfo,
   getIndentation,
   joinLines,
   resolveValue,
@@ -12,7 +12,7 @@ const transformOpenTag = (
   html: string,
   attributes: Record<string, string>
 ): string => {
-  const name = tag.slice(7)
+  const name = tag.slice(7) || 'default'
   const inputLines = html.split('\n')
   const lastLineIndex = inputLines.length - 1
   const attributeEntries = Object.entries(attributes)
@@ -24,15 +24,15 @@ const transformOpenTag = (
   }
 
   const firstLine = {
-    text: `<?php layout(${name ? `${name}` : 'null'}, __snippetData([`,
+    text: `<?php layout('${name}', __snippetData([`,
     line: 0,
   }
 
   const attributeLines = attributeEntries.map(([key, value], index) => {
-    const { line, indentation } = getAttributePosition(key, html)
+    const { line, indentation, name } = getAttributeInfo(key, html)
     const isLast = index === attributeEntries.length - 1
     const comma = isLast ? '' : ','
-    const text = `${indentation}'${key}' => ${resolveValue(value)}${comma}`
+    const text = `${indentation}'${name}' => ${resolveValue(value)}${comma}`
     return { text, line }
   })
 
