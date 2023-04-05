@@ -1,6 +1,6 @@
 {
   "name": "@kirby-template-sugar/monorepo",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "dev": "pnpm -r dev",
     "build": "pnpm -r build",
