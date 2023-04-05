@@ -35,7 +35,8 @@ jobs:
           php-version: '8.2'
 
       - name: Install composer Dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+        run: composer install --prefer-dist --no-progress
+        working-directory: packages/kirby-plugin
 
       - name: Test
         run: pnpm test
