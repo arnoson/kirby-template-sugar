@@ -1,5 +1,6 @@
 {
 	"scripts": {
 		"test": "./vendor/bin/pest"
-	}
+	},
+	"version": "0.0.1"
 }
