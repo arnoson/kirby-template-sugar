@@ -7,7 +7,9 @@ Kirby's new snippets with slots enable you to adapt a component-based workflow l
 ```html
 <snippet:card @rounded="<? true ?>" class="bg-yellow" id="my-card">
   <slot:icon>🍬</slot:icon>
-  <slot:title> <h2>Kirby Template Sugar</h2> </slot:title>
+  <slot:title>
+    <h2>Kirby Template Sugar</h2>
+  </slot:title>
   <slot>
     <snippet:link @url="github.com/arnoson/kirby-template-sugar">
       <i>Read more ...</i>
@@ -37,7 +39,7 @@ instead of this:
 
 ## How does it work
 
-On order to get this to work, your original template file has to be compiled to normal php, similar to how other template languages (like laravel blade) work. The difference with Kirby Template Sugar is that it is still just 99% html+php but with the added `<snippet:name>` and `<slot>` sugar. So you still have syntax highlighting, intellisense, ...
+To make this work, your template files need to be compiled into regular php, similar to how other template languages (like Laravel's Blade) work. But the goal of this project is not to create a new full template language for Kirby. Instead it embraces php templates and just adds a little sugar where they tend to get too messy. You still write php/html (with syntax highlighting, intellisense, ...) and add a special `<snippet>`, `<slot>` or `<layout>` tag here and there to keep things tidy.
 
 The templates can either be compiled via the `kirby-template-sugar` CLI or with a [Vite](https://vitejs.dev/) plugin. See the examples folder for both approaches.
 
