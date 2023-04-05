@@ -2,7 +2,13 @@
   "compilerOptions": {
     "target": "esnext",
     "moduleResolution": "node",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "kirby-template-sugar": ["./packages/npm-package/src/index.ts"],
+      "vite-plugin-kirby-template-sugar": [
+        "./packages/vite-plugin/src/index.ts"
+      ]
+    }
   },
   "include": ["packages/**/*"],
   "exclude": ["node_modules", "**/*.test.ts"]
