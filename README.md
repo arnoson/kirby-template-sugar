@@ -44,7 +44,7 @@ instead of this:
 
 ## How Does It Work
 
-To make this work, your template files need to be compiled into regular php, similar to how other template languages work. But the goal of this project is not to create a new full-fledged template language for Kirby. Instead it embraces the existing php templates and just adds a little sugar where they tend to get too messy. You still write php/html (with syntax highlighting, intellisense, ...) and add a special `<snippet>`, `<slot>` or `<layout>` tag here and there to keep things tidy.
+Your template files need to be compiled into regular php, similar to how other template languages work. But the goal of this project is not to create a new full-fledged template language for Kirby. Instead it embraces the existing php templates and just adds a little sugar where they tend to get too messy. You still write php/html (with syntax highlighting, intellisense, ...) and add a special `<snippet>`, `<slot>` or `<layout>` tag here and there to keep things tidy.
 
 ## Getting Started
 
