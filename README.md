@@ -52,7 +52,7 @@ The easiest way to get started is to check out one of the examples:
 - Use the [CLI example](https://github.com/arnoson/kirby-template-sugar/tree/main/examples/cli) if you want a minimal starter kit that doesn't rely on any other build tools.
 - Use the [Vite example](https://github.com/arnoson/kirby-template-sugar/tree/main/examples/cli) to compile your templates alongside your other frontend assets.
 
-To start manually (or convert an existing project), have a look at the [CLI](https://github.com/arnoson/kirby-template-sugar/tree/main/packages/npm-package) or the [Vite plugin](https://github.com/arnoson/kirby-template-sugar/tree/main/packages/vite-plugin). And make sure you also install the [Kirby plugin](https://github.com/arnoson/kirby-template-sugar/tree/main/packages/kirby-plugin).
+To start manually (or convert an existing project), have a look at the [CLI](https://github.com/arnoson/kirby-template-sugar/tree/main/packages/npm-package#cli-usage) or the [Vite plugin](https://github.com/arnoson/kirby-template-sugar/tree/main/packages/vite-plugin). And make sure you also install the [Kirby plugin](https://github.com/arnoson/kirby-template-sugar/tree/main/packages/kirby-plugin).
 
 
 ## Syntax
@@ -192,7 +192,7 @@ Or even better with @fabianmichael's fantastic [kirby-template-attributes](https
 
 ### Layouts
 
-If you also use Kirby's [layouts](https://github.com/getkirby/layouts) you can define them with the `<layout> tag:
+If you also use Kirby's [layouts](https://github.com/getkirby/layouts) you can define them with the `<layout>` tag:
 
 <table>
 <tr>
