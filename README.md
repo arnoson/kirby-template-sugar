@@ -1,6 +1,6 @@
 <p align="center">
   <img src="https://user-images.githubusercontent.com/15122993/230340162-3c838636-ba50-470e-8b41-e268dedc1986.svg"
- alt="Kirby Template Sugar" width="128" height="128">
+ alt="Kirby Template Sugar" width="135" height="135">
 </p>
 
 <h1 align="center">Kirby Template Sugar</h1>
