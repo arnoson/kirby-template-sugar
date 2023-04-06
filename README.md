@@ -263,3 +263,10 @@ Or with slots and even props and attributes
 </td>
 </tr>
 </table>
+
+## Credits
+- [magic-string](https://github.com/rich-harris/magic-string)
+- [htmlparser2](https://github.com/fb55/htmlparser2)
+- [glob](https://github.com/isaacs/node-glob)
+- [CAC](https://github.com/cacjs/cac)
+- [chokidar](https://github.com/paulmillr/chokidar)
