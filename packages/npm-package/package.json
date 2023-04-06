@@ -19,14 +19,14 @@
     "chokidar": "^3.5.3",
     "glob": "^9.3.2",
     "htmlparser2": "^8.0.2",
-    "magic-string": "^0.30.0",
-    "prettier": "^2.8.7",
-    "tsx": "^3.12.6"
+    "magic-string": "^0.30.0"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
     "tsup": "^6.7.0",
     "typescript": "^5.0.3",
-    "vitest": "^0.29.8"
+    "vitest": "^0.29.8",
+    "prettier": "^2.8.7",
+    "tsx": "^3.12.6"
   }
 }
