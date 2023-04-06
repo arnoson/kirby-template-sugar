@@ -1,5 +1,12 @@
+/.* export-ignore
+/package.json export-ignore
+/tsconfig.json export-ignore
+/types.php export-ignore
 /examples export-ignore
 /packages/npm-package export-ignore
 /packages/vite-plugin export-ignore
-/.vscode export-ignore
-/.github export-ignore
+
+/packages/kirby-plugin/.* export-ignore
+/packages/kirby-plugin/tests export-ignore
+/packages/kirby-plugin/composer.json export-ignore
+/packages/kirby-plugin/package.json export-ignore
