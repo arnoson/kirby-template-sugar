@@ -3,6 +3,7 @@
   "type": "module",
   "version": "0.0.4",
   "main": "dist/index.js",
+  "license": "MIT",
   "bin": {
     "kirby-template-sugar": "./dist/cli.js"
   },

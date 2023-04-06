@@ -2,6 +2,7 @@
 	"require": {
 		"getkirby/composer-installer": "^1.2"
 	},
+	"license": "MIT",
 	"require-dev": {
 		"getkirby/cms": "^3.9",
 		"pestphp/pest": "^2.4"
