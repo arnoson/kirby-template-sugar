@@ -1,8 +1,13 @@
-# Kirby Template Sugar
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/15122993/230340162-3c838636-ba50-470e-8b41-e268dedc1986.svg"
+ alt="Kirby Template Sugar" width="128" height="128">
+</p>
 
-Kirby Template Sugar is a small template compiler that adds some syntactic sugar to Kirby's php templates.
+<h1 align="center">Kirby Template Sugar</h1>
 
-Kirby's new snippets with slots enable you to adapt a component-based workflow like in laravel blade templates or javascript frameworks like Vue. But the syntax can be verbose. So with some template sugar you can write this:
+A lightweight template compiler that adds some [syntactic sugar](https://en.wikipedia.org/wiki/Syntactic_sugar) to Kirby's php templates.
+
+Kirby's new [snippets with slots](https://getkirby.com/docs/guide/templates/snippets#passing-slots-to-snippets) allow you to adapt a component-based workflow, similar to Laravel blade templates or javascript frameworks like Vue. However, the plain php syntax can be verbose. So with some template sugar you can write this:
 
 ```html
 <snippet:card @rounded="<? true ?>" class="bg-yellow" id="my-card">
@@ -37,11 +42,18 @@ instead of this:
 <?php endsnippet(); ?>
 ```
 
-## How does it work
+## How Does It Work
 
-To make this work, your template files need to be compiled into regular php, similar to how other template languages (like Laravel's Blade) work. But the goal of this project is not to create a new full template language for Kirby. Instead it embraces php templates and just adds a little sugar where they tend to get too messy. You still write php/html (with syntax highlighting, intellisense, ...) and add a special `<snippet>`, `<slot>` or `<layout>` tag here and there to keep things tidy.
+To make this work, your template files need to be compiled into regular php, similar to how other template languages work. But the goal of this project is not to create a new full-fledged template language for Kirby. Instead it embraces the existing php templates and just adds a little sugar where they tend to get too messy. You still write php/html (with syntax highlighting, intellisense, ...) and add a special `<snippet>`, `<slot>` or `<layout>` tag here and there to keep things tidy.
 
-The templates can either be compiled via the `kirby-template-sugar` CLI or with a [Vite](https://vitejs.dev/) plugin. See the examples folder for both approaches.
+## Getting Started
+
+The easiest way to get started is to check out one of the examples:
+- Use the [CLI example](https://github.com/arnoson/kirby-template-sugar/tree/main/examples/cli) if you want a minimal starter kit that doesn't rely on any other build tools.
+- Use the [Vite example](https://github.com/arnoson/kirby-template-sugar/tree/main/examples/cli) to compile your templates alongside your other frontend assets.
+
+To start manually (or convert an existing project), have a look at the [CLI](https://github.com/arnoson/kirby-template-sugar/tree/main/packages/npm-package) or the [Vite plugin](https://github.com/arnoson/kirby-template-sugar/tree/main/packages/vite-plugin). And make sure you also install the [Kirby plugin](https://github.com/arnoson/kirby-template-sugar/tree/main/packages/kirby-plugin).
+
 
 ## Syntax
 
@@ -86,7 +98,9 @@ Snippets can have slots or be self-closing:
 
 ### Props and attributes
 
-Snippets can have `props` which are directly passed to snippet and attributes, which are grouped into an `$attr` variable passed to the snippet alongside the props.
+Snippets can have `props`, which are passed directly to the snippet, and attributes, which are grouped into an `$attr` variable passed to the snippet along with the props. Props start with `@` (like `@open` and `@items`) and attributes are just specified like regular html attributes (`class`, `aria-label`).
+
+If you want to pass a php expression to a snippet, e.g.: `items => $site->children()->listed()`, you just have to wrap it in php tags (see the code below):
 
 <table>
 <tr>
@@ -123,7 +137,7 @@ Snippets can have `props` which are directly passed to snippet and attributes, w
 </tr>
 </table>
 
-Well ... actually the compiled code looks like this. To make the debugging easier, line numbers will stay the same:
+Well... actually the compiled code looks like this. To make debugging easier, the line numbers will stay the same:
 
 <table>
 <tr>
@@ -175,3 +189,77 @@ Or even better with @fabianmichael's fantastic [kirby-template-attributes](https
   <?php foreach ($items as $item) { /* ... */ } ?>
 </nav>
 ```
+
+### Layouts
+
+If you also use Kirby's [layouts](https://github.com/getkirby/layouts) you can define them with the `<layout> tag:
+
+<table>
+<tr>
+<th width="500px">With Sugar</th>
+<th width="500px">Compiled</th>
+</tr>
+<tr>
+<td valign="top">
+
+```html
+<layout>
+
+Your Content ...
+```
+
+</td>
+<td valign="top">
+
+```php
+<?php layout('default'); ?>
+
+Your Content ...
+```
+
+</td>
+</tr>
+</table>
+
+Or with slots and even props and attributes
+
+<table>
+<tr>
+<th width="500px">With Sugar</th>
+<th width="500px">Compiled</th>
+</tr>
+<tr>
+<td valign="top">
+
+```html
+<layout:gallery
+  @showMenu="<? false ?>"
+  @layout="portrait"
+>
+
+<slot:img><img /></slot:img>
+
+<slot:caption>
+  An image
+</slot:caption>
+```
+
+</td>
+<td valign="top">
+
+```php
+<?php layout('gallery', __snippetData([
+  '@showMenu' => false,
+  '@layout' => 'portrait'
+])); ?>
+
+<?php slot('img'); ?><img /><?php endslot(/* img */); ?>
+
+<?php slot('caption'); ?>
+  An image
+<?php endslot(/* caption */); ?>
+```
+
+</td>
+</tr>
+</table>
