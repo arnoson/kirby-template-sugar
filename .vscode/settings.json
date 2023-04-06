@@ -3,5 +3,8 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "files.associations": {
     "*.kirby": "php"
+  },
+  "[markdown]": {
+    "editor.formatOnSave": false
   }
 }
