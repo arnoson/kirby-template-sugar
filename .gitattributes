@@ -1,0 +1,5 @@
+/examples export-ignore
+/packages/npm-package export-ignore
+/packages/vite-plugin export-ignore
+/.vscode export-ignore
+/.github export-ignore

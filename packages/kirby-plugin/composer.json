@@ -1,13 +1,4 @@
 {
-	"name": "arnoson/kirby-template-sugar",
-	"version": "0.0.3",
-	"type": "kirby-plugin",
-	"license": "MIT",
-	"authors": [
-		{
-			"name": "Arno Schlipf"
-		}
-	],
 	"require": {
 		"getkirby/composer-installer": "^1.2"
 	},
