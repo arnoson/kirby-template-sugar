@@ -264,6 +264,10 @@ Or with slots and even props and attributes
 </tr>
 </table>
 
+## Debugging
+
+If you are using [xdebug](https://xdebug.org/), you won't be able to set breakpoints through your IDE, but you can use `xdebug_break()` in your source file. To remove the breakpoint, simply remove `xdebug_break()` and save the source file again.
+
 ## Credits
 - [magic-string](https://github.com/rich-harris/magic-string)
 - [htmlparser2](https://github.com/fb55/htmlparser2)
