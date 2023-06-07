@@ -1,0 +1,3 @@
+<a href="<?= $href ?>">
+  <?= $slots->default() ?? $href ?>
+</a>

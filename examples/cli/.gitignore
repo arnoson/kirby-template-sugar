@@ -3,8 +3,6 @@ vendor
 dist
 site/plugins/*
 !site/plugins/kirby-template-sugar
-site/templates/*
-site/snippets/*
 .dev
 
 # System files
