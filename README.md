@@ -194,7 +194,7 @@ Or even better with @fabianmichael's fantastic [kirby-template-attributes](https
 
 You can assign CSS variables with an attribute-like syntax. This works for any html element, not just the special snippets and layouts!
 
-Note: you can even omit the `var()` if you are referencing another variable name (like `--some-variable`).
+Note: you can omit the `var()` if you are referencing another variable name (like `--some-variable`).
 
 <table>
 <tr>
@@ -211,7 +211,7 @@ Note: you can even omit the `var()` if you are referencing another variable name
 </td>
 <td valign="top">
 
-```php
+```html
 <img style="--x: 10px; --y: var(--some-variable)">
 ```
 
