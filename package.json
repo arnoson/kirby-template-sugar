@@ -10,6 +10,6 @@
     "release": "bumpp -r"
   },
   "devDependencies": {
-    "bumpp": "^9.1.0"
+    "bumpp": "^9.1.1"
   }
 }
