@@ -192,7 +192,7 @@ Or even better with @fabianmichael's fantastic [kirby-template-attributes](https
 
 ### CSS Variables
 
-You can assign CSS variables with an attribute-like syntax. This works for any html element, not just the special snippets and layouts!
+You can assign CSS variables with an attribute-like syntax. Right now this only works on `<snippet>` and `<layout>`, support for normal html tags might follow.
 
 Note: you can omit the `var()` if you are referencing another variable name (like `--some-variable`).
 
@@ -205,14 +205,20 @@ Note: you can omit the `var()` if you are referencing another variable name (lik
 <td valign="top">
 
 ```html
-<img --x="10px" --y="--some-variable">
+<snippet:point
+  --x="10px"
+  --y="--some-variable"
+/>
 ```
 
 </td>
 <td valign="top">
 
-```html
-<img style="--x: 10px; --y: var(--some-variable)">
+```php
+<?php snippet('point', __snippetData([
+  'style' => ['--x: 10px;
+  --y: var(--some-variable)']
+])); ?>
 ```
 
 </td>
