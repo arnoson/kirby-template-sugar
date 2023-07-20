@@ -1,31 +1,9 @@
 import {
-  getAttributeInfo,
   getIndentation,
   joinLines,
   prepareAttributes,
   resolveCssValue,
-  resolveValue,
 } from '../utils'
-
-const sortAttributesByCssVars = (attributes) => {
-  const cssVars = []
-  const rest = []
-
-  for (const attribute of attributes) {
-    const isCssVar = attribute[0].startsWith('--')
-    if (isCssVar) cssVars.push(attribute)
-    else rest.push(attribute)
-  }
-
-  const firstCssVarIndex = attributes.indexOf(cssVars[0])
-  const sortedAttributes = rest
-  sortedAttributes.splice(firstCssVarIndex, 0, ...cssVars)
-
-  return {
-    sortedAttributes,
-    cssVarRange: [firstCssVarIndex, firstCssVarIndex + cssVars.length - 1],
-  }
-}
 
 const match = () => true
 
