@@ -1,10 +1,10 @@
 import { Parser } from 'htmlparser2'
 import MagicString from 'magic-string'
-import { layout, slot, snippet } from './transformers'
+import { layout, slot, snippet, tag } from './transformers'
 
 export const transform = (input: string) => {
   const output = new MagicString(input)
-  const transformers = [snippet, slot, layout]
+  const transformers = [snippet, slot, layout, tag]
 
   const parser = new Parser({
     onopentag(tag, attributes) {

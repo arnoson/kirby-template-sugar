@@ -51,8 +51,54 @@ export const resolveValue = (value: string) => {
   return valueIsPhp ? match[1].trim() : `'${value}'`
 }
 
+export const resolveCssValue = (value: string) => {
+  const valueIsCssVar = value.startsWith('--')
+  return valueIsCssVar ? `var(${value})` : value
+}
+
 export const changeFileExtension = (filename: string, newExtension: string) =>
   join(
     dirname(filename),
-    `${basename(filename, extname(filename))}${newExtension}`
+    `${basename(filename, extname(filename))}${newExtension}`,
   )
+
+export const prepareAttributes = (
+  attributes: Record<string, string>,
+  html: string,
+) => {
+  const entries = Object.entries(attributes)
+
+  const cssVars = []
+  const rest = []
+  for (const attribute of entries) {
+    const isCssVar = attribute[0].startsWith('--')
+    if (isCssVar) cssVars.push(attribute)
+    else rest.push(attribute)
+  }
+
+  const firstCssVarIndex = entries.indexOf(cssVars[0])
+  const lastCssVarIndex =
+    firstCssVarIndex + firstCssVarIndex + cssVars.length - 1
+
+  const sortedAttributes = rest
+  sortedAttributes.splice(firstCssVarIndex, 0, ...cssVars)
+
+  return sortedAttributes.map(([key, value], index) => {
+    const { line, indentation, name } = getAttributeInfo(key, html)
+
+    const isCssVar = index >= firstCssVarIndex && index <= lastCssVarIndex
+    const isFirstCssVar = index === firstCssVarIndex
+    const isLastCssVar = index === lastCssVarIndex
+    const isOnlyCssVar = isFirstCssVar && isLastCssVar
+
+    const cssVarPosition = isOnlyCssVar
+      ? 'only'
+      : isFirstCssVar
+      ? 'first'
+      : isLastCssVar
+      ? 'last'
+      : undefined
+
+    return { key, name, value, line, indentation, isCssVar, cssVarPosition }
+  })
+}

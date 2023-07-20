@@ -190,6 +190,35 @@ Or even better with @fabianmichael's fantastic [kirby-template-attributes](https
 </nav>
 ```
 
+### CSS Variables
+
+You can assign CSS variables with an attribute-like syntax. This works for any html element, not just the special snippets and layouts!
+
+Note: you can even omit the `var()` if you are referencing another variable name (like `--some-variable`).
+
+<table>
+<tr>
+<th width="500px">With Sugar</th>
+<th width="500px">Compiled</th>
+</tr>
+<tr>
+<td valign="top">
+
+```html
+<img --x="10px" --y="--some-variable">
+```
+
+</td>
+<td valign="top">
+
+```php
+<img style="--x: 10px; --y: var(--some-variable)">
+```
+
+</td>
+</tr>
+</table>
+
 ### Layouts
 
 If you also use Kirby's [layouts](https://github.com/getkirby/layouts) you can define them with the `<layout>` tag:

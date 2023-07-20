@@ -55,4 +55,22 @@ describe('transform', () => {
     output = `<?php layout('name', __snippetData(['class' => 'no-js'])); ?>`
     expect(transform(input)).toBe(output)
   })
+
+  it('handles css variables', () => {
+    let input = `<snippet:test --a="1rem" --b="2rem" --c="3rem"/>`
+    let output = `<?php snippet('test', __snippetData(['style' => '--a: 1rem; --b: 2rem; --c: 3rem'])); ?>`
+    expect(transform(input)).toBe(output)
+
+    input = `<layout:test --a="1rem" --b="2rem" --c="3rem"/>`
+    output = `<?php layout('test', __snippetData(['style' => '--a: 1rem; --b: 2rem; --c: 3rem'])); ?>`
+    expect(transform(input)).toBe(output)
+
+    input = `<div --a="1rem" --b="2rem" --c="3rem"></div>`
+    output = `<div style="--a: 1rem; --b: 2rem; --c: 3rem"></div>`
+    expect(transform(input)).toBe(output)
+
+    input = `<div --shorthand="--my-var"></div>`
+    output = `<div style="--shorthand: var(--my-var)"></div>`
+    expect(transform(input)).toBe(output)
+  })
 })
