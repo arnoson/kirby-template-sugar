@@ -98,8 +98,6 @@ export const prepareAttributes = (
       ? 'last'
       : undefined
 
-    console.log(cssVarPosition, key)
-
     return { key, name, value, line, indentation, isCssVar, cssVarPosition }
   })
 }
