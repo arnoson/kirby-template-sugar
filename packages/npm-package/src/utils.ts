@@ -77,8 +77,7 @@ export const prepareAttributes = (
   }
 
   const firstCssVarIndex = entries.indexOf(cssVars[0])
-  const lastCssVarIndex =
-    firstCssVarIndex + firstCssVarIndex + cssVars.length - 1
+  const lastCssVarIndex = firstCssVarIndex + cssVars.length - 1
 
   const sortedAttributes = rest
   sortedAttributes.splice(firstCssVarIndex, 0, ...cssVars)
@@ -98,6 +97,8 @@ export const prepareAttributes = (
       : isLastCssVar
       ? 'last'
       : undefined
+
+    console.log(cssVarPosition, key)
 
     return { key, name, value, line, indentation, isCssVar, cssVarPosition }
   })
