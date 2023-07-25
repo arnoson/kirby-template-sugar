@@ -37,8 +37,8 @@ const transformOpenTag = (
     const isLast = index === attributes.length - 1
     const comma = isLast ? '' : ','
 
-    // Add and resolve attributes and group all css variable attributes inside
-    // a `style` attribute.
+    // Add and resolve attributes and group all css variables inside a `style`
+    // attribute.
     const text =
       cssVarPosition === 'only'
         ? `${indentation}'style' => '${name}: ${resolveCssValue(value)}'`
