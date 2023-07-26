@@ -7,7 +7,7 @@ const match = ({ name }: Tag) =>
 const transformOpenTag = (tag: Tag): string => {
   const [type, name = 'default'] = tag.name.split(':')
 
-  const slots = tag.isSelfClosing ? '' : ', slots: true'
+  const slots = type === 'layout' || tag.isSelfClosing ? '' : ', slots: true'
   if (!tag.attributes.length) return `<?php ${type}('${name}'${slots}); ?>`
 
   const firstLine = {
