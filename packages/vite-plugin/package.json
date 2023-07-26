@@ -10,7 +10,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "pnpm build --watch",
-    "build": "tsup ./src/index.ts --clean --dts --minify --format esm"
+    "build": "tsup ./src/index.ts --clean --dts --format esm"
   },
   "dependencies": {
     "kirby-template-sugar": "workspace:*"
