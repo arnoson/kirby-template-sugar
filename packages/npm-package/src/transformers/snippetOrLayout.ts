@@ -1,5 +1,4 @@
-import type { Tag } from '../parser'
-import { Attribute } from '../parser'
+import { Tag, Attribute } from '../types'
 import { joinLines, resolveCssValue, resolveValue } from '../utils'
 
 const match = ({ name }: Tag) =>

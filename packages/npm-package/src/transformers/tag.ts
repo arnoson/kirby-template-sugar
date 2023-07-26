@@ -1,5 +1,5 @@
-import { Attribute, Tag } from '../parser'
-import { joinLines, resolveCssValue, resolveValue } from '../utils'
+import { Attribute, Tag } from '../types'
+import { joinLines, resolveCssValue } from '../utils'
 
 // We can leave most HTML tags as is. We only have to transform them if they use
 // the CSS variable attribute syntax, like `<div --color="red" >`.

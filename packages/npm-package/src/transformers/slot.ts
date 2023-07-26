@@ -1,4 +1,4 @@
-import { Tag } from '../parser'
+import { Tag } from '../types'
 
 const match = ({ name }: Tag) => name.startsWith('slot')
 
