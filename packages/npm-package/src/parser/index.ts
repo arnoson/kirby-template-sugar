@@ -144,6 +144,7 @@ export const parse = (
           attribute = undefined
         }
       } else if (isInsideHtmlTag) {
+        attribute ??= createAttribute()
         attribute.value += char
       }
       continue
