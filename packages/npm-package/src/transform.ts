@@ -1,7 +1,6 @@
-import { Parser } from 'htmlparser2'
 import MagicString from 'magic-string'
 import { parse } from './parser'
-import { snippetOrLayout, slot, tag } from './transformers'
+import { slot, snippetOrLayout, tag } from './transformers'
 
 export const transform = (input: string) => {
   const output = new MagicString(input)
