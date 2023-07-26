@@ -1,4 +1,4 @@
-import { Attribute, ParseOptions, Tag } from './types'
+import { Attribute, ParseOptions, Tag } from '../types'
 import { isQuote, isWhitespace, getIndent, isCodeTag } from './utils'
 
 let html = ''
@@ -17,13 +17,14 @@ const resetState = () => {
   openTagName = undefined
 }
 
-let lineCount = 0
-const resetLineCount = () => (lineCount = 0)
-
 const createTag = (data: Partial<Tag> = {}): Tag => ({
   name: '',
   attributes: [],
   isSelfClosing: false,
+  startIndex: 0,
+  endIndex: 0,
+  lineCount: 0,
+  indentBeforeEnd: '',
   ...data,
 })
 let tag = createTag()
@@ -32,7 +33,7 @@ const createAttribute = (data: Partial<Attribute> = {}): Attribute => ({
   name: '',
   value: '',
   isPhp: false,
-  line: lineCount,
+  line: tag?.lineCount ?? 0,
   indent: getIndent(html, position),
   ...data,
 })
@@ -75,7 +76,7 @@ export const parse = (
     const isEscaped = prevChar === '\\'
     if (isEscaped) continue
 
-    if (char === '\n') lineCount++
+    if (char === '\n' && tag) tag.lineCount++
 
     // Quotes only have a special meaning inside HTML tags, like `<div id="fu">`
     // or between code tags, like `<script>fu="<div>"</script>`.
@@ -161,6 +162,10 @@ export const parse = (
         const isCloseTag = tag.name.startsWith('/')
         const isSelfClosing = prevChar === '/'
         const name = tag.name.replace('/', '')
+        tag.endIndex = position
+        tag.indentBeforeEnd = isSelfClosing
+          ? getIndent(html, position - 1)
+          : getIndent(html, position)
 
         if (isCloseTag) {
           onCloseTag?.({ ...tag, name })
@@ -183,9 +188,9 @@ export const parse = (
     // Outside of an HTML tag we ignore everything and only wait for a new tag.
     if (char === '<') {
       isInsideHtmlTag = true
+      const startIndex = position
       const name = consumeUntil([' ', '\n', '\t', '>'])
-      tag = createTag({ name })
-      resetLineCount()
+      tag = createTag({ name, startIndex })
     }
   }
 }

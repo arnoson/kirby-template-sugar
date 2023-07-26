@@ -1,12 +1,14 @@
-const match = (tag: string) => tag.startsWith('slot')
+import { Tag } from '../parser'
 
-const transformOpenTag = (tag: string) => {
-  const name = tag.slice(5)
+const match = ({ name }: Tag) => name.startsWith('slot')
+
+const transformOpenTag = (tag: Tag) => {
+  const [, name] = tag.name.split(':')
   return name ? `<?php slot('${name}'); ?>` : `<?php slot(); ?>`
 }
 
-const transformCloseTag = (tag: string) => {
-  const name = tag.slice(5)
+const transformCloseTag = (tag: Tag) => {
+  const [, name] = tag.name.split(':')
   return name ? `<?php endslot(/* ${name} */); ?>` : `<?php endslot(); ?>`
 }
 

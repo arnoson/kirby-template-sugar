@@ -1,4 +1,3 @@
-export * from './layout'
+export * from './snippetOrLayout'
 export * from './slot'
-export * from './snippet'
 export * from './tag'

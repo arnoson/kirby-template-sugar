@@ -27,7 +27,7 @@ describe('transform', () => {
       '@myPhpProp' => [1, 2, 3],
       'class' => 'red',
       'id' => $id,
-      'aria-label' => 'text'
+      'aria-label' => 'text',
     ])); ?>`
     expect(transform(input)).toBe(output)
   })
@@ -48,21 +48,46 @@ describe('transform', () => {
 
   it('handles layouts', () => {
     let input = `<layout @myProp="<? $prop ?>" />`
-    let output = `<?php layout('default', __snippetData(['@myProp' => $prop])); ?>`
+    let output = `<?php layout('default', __snippetData([ '@myProp' => $prop, ])); ?>`
     expect(transform(input)).toBe(output)
 
     input = `<layout:name class="no-js" />`
-    output = `<?php layout('name', __snippetData(['class' => 'no-js'])); ?>`
+    output = `<?php layout('name', __snippetData([ 'class' => 'no-js', ])); ?>`
     expect(transform(input)).toBe(output)
   })
 
-  it('handles css variables', () => {
-    let input = `<snippet:test --a="1rem" --b="2rem" --c="3rem"/>`
-    let output = `<?php snippet('test', __snippetData(['style' => '--a: 1rem; --b: 2rem; --c: 3rem'])); ?>`
+  it('handles CSS variables', () => {
+    // Snippet
+    let input = `<snippet:test
+      --a="1rem"
+      --b="2rem"
+      --c="3rem"
+    />`
+    let output = `<?php snippet('test', __snippetData([
+      'style' => '--a: 1rem;
+      --b: 2rem;
+      --c: 3rem',
+    ])); ?>`
     expect(transform(input)).toBe(output)
 
-    input = `<layout:test --shorthand="--my-var"/>`
-    output = `<?php layout('test', __snippetData(['style' => '--shorthand: var(--my-var)'])); ?>`
+    // Layout
+    input = `<layout:test --shorthand="--my-var" />`
+    output = `<?php layout('test', __snippetData([ 'style' => '--shorthand: var(--my-var)' ])); ?>`
+    expect(transform(input)).toBe(output)
+
+    // Normal tag
+    input = `<div
+      <?= $php ?>
+      class="red"
+      --a="1rem"
+      --b="--shorthand"
+    ></div>`
+    output = `<div
+      <?= $php ?>
+      class="red"
+      style="--a: 1rem;
+      --b: var(--shorthand)"
+    ></div>`
     expect(transform(input)).toBe(output)
   })
 })

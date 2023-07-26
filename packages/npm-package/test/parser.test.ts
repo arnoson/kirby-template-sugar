@@ -59,6 +59,21 @@ aria-disabled></div>`
     expect(onCloseTag).not.toHaveBeenCalled()
   })
 
+  it('provides start and end indexes for tags', () => {
+    const html = `   <div class="fu">   </div>`
+    const onOpenTag = vi.fn()
+    const onCloseTag = vi.fn()
+    parse(html, { onOpenTag, onCloseTag })
+
+    expect(onOpenTag).toBeCalledWith(
+      expect.objectContaining({ startIndex: 3, endIndex: 18 }),
+    )
+
+    expect(onCloseTag).toBeCalledWith(
+      expect.objectContaining({ startIndex: 22, endIndex: 27 }),
+    )
+  })
+
   it('handles PHP tags inside HTML tags', () => {
     const html = `<div id="fu" <?= $a ?> class="bar" <?php $b ?>>`
     const onOpenTag = vi.fn()

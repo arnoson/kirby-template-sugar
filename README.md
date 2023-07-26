@@ -192,7 +192,7 @@ Or even better with @fabianmichael's fantastic [kirby-template-attributes](https
 
 ### CSS Variables
 
-You can assign CSS variables with an attribute-like syntax. Right now this only works on `<snippet>` and `<layout>`, support for normal html tags might follow.
+You can assign CSS variables with an attribute-like syntax. This works on any tag, not just `<snippet>` and `<layout>`.
 
 Note: you can omit the `var()` if you are referencing another variable name (like `--some-variable`).
 
@@ -209,6 +209,8 @@ Note: you can omit the `var()` if you are referencing another variable name (lik
   --x="10px"
   --y="--some-variable"
 />
+
+<img --padding="2rem" />
 ```
 
 </td>
@@ -219,6 +221,8 @@ Note: you can omit the `var()` if you are referencing another variable name (lik
   'style' => ['--x: 10px;
   --y: var(--some-variable)']
 ])); ?>
+
+<img style="--padding: 2rem" />
 ```
 
 </td>
@@ -305,7 +309,6 @@ If you are using [xdebug](https://xdebug.org/), you won't be able to set breakpo
 
 ## Credits
 - [magic-string](https://github.com/rich-harris/magic-string)
-- [htmlparser2](https://github.com/fb55/htmlparser2)
 - [glob](https://github.com/isaacs/node-glob)
 - [CAC](https://github.com/cacjs/cac)
 - [chokidar](https://github.com/paulmillr/chokidar)
