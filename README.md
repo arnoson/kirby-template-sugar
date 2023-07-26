@@ -218,8 +218,8 @@ Note: you can omit the `var()` if you are referencing another variable name (lik
 
 ```php
 <?php snippet('point', __snippetData([
-  'style' => ['--x: 10px;
-  --y: var(--some-variable)']
+  'style' => '--x: 10px;
+  --y: var(--some-variable)'
 ])); ?>
 
 <img style="--padding: 2rem" />
