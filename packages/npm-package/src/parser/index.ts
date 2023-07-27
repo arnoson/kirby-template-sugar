@@ -127,7 +127,7 @@ export const parse = (
       continue
     }
 
-    // Ignore PHP tags, unless tag PHP tag is inside an HTML tag,
+    // Ignore PHP tags, unless the PHP tag is inside an HTML tag,
     // like `<img <?= classes('red') ?> />`. In this case we add it as a special
     // attribute with the `isPhp` flag.
     if (char === '<' && nextChar === '?') {
@@ -186,7 +186,7 @@ export const parse = (
       continue
     }
 
-    // Outside of an HTML tag we ignore everything and only wait for a new tag.
+    // Outside of an HTML tag we ignore everything and wait for a new tag.
     if (char === '<') {
       isInsideHtmlTag = true
       const startIndex = position
