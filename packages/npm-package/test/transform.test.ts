@@ -77,13 +77,13 @@ describe('transform', () => {
 
     // Normal tag
     input = `<div
-      <?= $php ?>
+      <?= classes('article')->merge($attr) ?>
       class="red"
       --a="1rem"
       --b="--shorthand"
     ></div>`
     output = `<div
-      <?= $php ?>
+      <?= classes('article')->merge($attr) ?>
       class="red"
       style="--a: 1rem;
       --b: var(--shorthand)"

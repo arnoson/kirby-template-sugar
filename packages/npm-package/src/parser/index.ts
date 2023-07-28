@@ -79,8 +79,10 @@ export const parse = (
     if (char === '\n' && tag) tag.lineCount++
 
     // Quotes only have a special meaning inside HTML tags, like `<div id="fu">`
-    // or between code tags, like `<script>fu="<div>"</script>`.
-    if (isInsideHtmlTag || isCodeTag(openTagName)) {
+    // or between code tags, like `<script>fu="<div>"</script>`. But in both
+    // cases we have to ignore quotes inside PHP tags,
+    // like `<script>const fu = <?= "123" ?></script>`.
+    if (!isInsidePhpTag && (isInsideHtmlTag || isCodeTag(openTagName))) {
       if (isQuote(char)) {
         // Read until the next unescaped quote (and consume the quote).
         const value = consumeUntil(char, true)

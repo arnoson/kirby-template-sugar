@@ -75,7 +75,12 @@ aria-disabled></div>`
   })
 
   it('handles PHP tags inside HTML tags', () => {
-    const html = `<div id="fu" <?= $a ?> class="bar" <?php $b ?>>`
+    const html = `<div
+  id="fu"
+  <?= classes('article')->merge($attr) ?>
+  class="bar"
+  <?php echo "test" . $test ?>
+>`
     const onOpenTag = vi.fn()
     parse(html, { onOpenTag })
 
@@ -84,10 +89,10 @@ aria-disabled></div>`
         name: 'div',
         // prettier-ignore
         attributes: [
-          { name: 'id', value: 'fu', indent: ' ', line: 0, isPhp: false },
-          { name: '', value: '<?= $a ?>', indent: ' ', line: 0, isPhp: true },
-          { name: 'class', value: 'bar', indent: ' ', line: 0, isPhp: false },
-          { name: '', value: '<?php $b ?>', indent: ' ', line: 0, isPhp: true },
+          { name: 'id', value: 'fu', indent: '  ', line: 1, isPhp: false },
+          { name: '', value: `<?= classes('article')->merge($attr) ?>`, indent: '  ', line: 2, isPhp: true },
+          { name: 'class', value: 'bar', indent: '  ', line: 3, isPhp: false },
+          { name: '', value: `<?php echo "test" . $test ?>`, indent: '  ', line: 4, isPhp: true },
         ],
         isSelfClosing: false,
       }),
