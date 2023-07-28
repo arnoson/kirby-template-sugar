@@ -103,8 +103,9 @@ export const parse = (
       }
     }
 
-    // Ignore comments inside code tags, like `<style>/* <div> */</style>`.
-    if (isCodeTag(openTagName)) {
+    // Ignore comments inside PHP tags or code tags,
+    // like `<style>/* <div> */</style>`.
+    if (isInsidePhpTag || isCodeTag(openTagName)) {
       // Single line comment
       if (!commentType && char === '/' && nextChar === '/') {
         commentType = 'single'

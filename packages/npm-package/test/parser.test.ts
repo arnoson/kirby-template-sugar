@@ -139,6 +139,7 @@ aria-disabled></div>`
 
     // PHP (outside of an HTML tag)
     html = `<?php
+      // ?>
       // <img />
       /* <div>
       </div> */
