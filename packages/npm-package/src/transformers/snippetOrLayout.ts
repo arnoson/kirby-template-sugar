@@ -1,5 +1,5 @@
 import { Tag, Attribute } from '../types'
-import { joinLines, resolveCssValue, resolveValue } from '../utils'
+import { joinLines, resolveCssValue, resolvePhpValue } from '../utils'
 
 const match = ({ name }: Tag) =>
   name.startsWith('snippet:') || name.startsWith('layout')
@@ -39,7 +39,7 @@ const transformOpenTag = (tag: Tag): string => {
 
     const value = isCssVar
       ? resolveCssValue(attribute.value)
-      : resolveValue(attribute.value)
+      : resolvePhpValue(attribute.value)
 
     let text = indent
     if (isOnlyCssVar) {
