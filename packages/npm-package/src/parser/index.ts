@@ -78,19 +78,26 @@ export const parse = (
 
     if (char === '\n' && tag) tag.lineCount++
 
-    // Quotes only have a special meaning inside HTML tags, like `<div id="fu">`
-    // or between code tags, like `<script>fu="<div>"</script>`. But in both
-    // cases we have to ignore quotes inside PHP tags,
-    // like `<script>const fu = <?= "123" ?></script>`.
-    if (!isInsidePhpTag && (isInsideHtmlTag || isCodeTag(openTagName))) {
+    // Quotes only have a special meaning inside HTML tags, like `<div id="fu">`,
+    // inside PHP tags, like `<?= echo "?>" ?>` or between code tags,
+    // like `<script>fu="<div>"</script>`.
+    if (isInsideHtmlTag || isInsideHtmlTag || isCodeTag(openTagName)) {
       if (isQuote(char)) {
         // Read until the next unescaped quote (and consume the quote).
         const value = consumeUntil(char, true)
         consume()
         if (isInsideHtmlTag) {
-          attribute ??= createAttribute()
-          tag.attributes.push({ ...attribute, value })
-          attribute = undefined
+          if (isInsidePhpTag) {
+            // PHP tags inside HTML tags are stored as name-less attributes. So
+            // we just add the quoted content to the PHP attribute.
+            attribute.value += `${char}${value}${char}`
+          } else {
+            // A quote inside an HTML tag that is not inside a PHP tag can only
+            // be an attribute value.
+            attribute ??= createAttribute()
+            tag.attributes.push({ ...attribute, value })
+            attribute = undefined
+          }
         }
         continue
       }

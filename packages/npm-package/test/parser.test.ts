@@ -79,7 +79,7 @@ aria-disabled></div>`
   id="fu"
   <?= classes('article')->merge($attr) ?>
   class="bar"
-  <?php echo "test" . $test ?>
+  <?php echo "?>" ?>
 >`
     const onOpenTag = vi.fn()
     parse(html, { onOpenTag })
@@ -92,7 +92,7 @@ aria-disabled></div>`
           { name: 'id', value: 'fu', indent: '  ', line: 1, isPhp: false },
           { name: '', value: `<?= classes('article')->merge($attr) ?>`, indent: '  ', line: 2, isPhp: true },
           { name: 'class', value: 'bar', indent: '  ', line: 3, isPhp: false },
-          { name: '', value: `<?php echo "test" . $test ?>`, indent: '  ', line: 4, isPhp: true },
+          { name: '', value: `<?php echo "?>" ?>`, indent: '  ', line: 4, isPhp: true },
         ],
         isSelfClosing: false,
       }),
@@ -107,6 +107,7 @@ aria-disabled></div>`
   })
 
   it('ignores code comments', () => {
+    // Script
     let html = `
       <script>
         // <img />
@@ -121,6 +122,7 @@ aria-disabled></div>`
       expect.objectContaining({ name: 'script' }),
     )
 
+    // Style
     html = `
       <style>
         // <i>sass style comment</i>
@@ -134,9 +136,20 @@ aria-disabled></div>`
       1,
       expect.objectContaining({ name: 'style' }),
     )
+
+    // PHP (outside of an HTML tag)
+    html = `<?php
+      // <img />
+      /* <div>
+      </div> */
+    ?>`
+    onOpenTag = vi.fn()
+    parse(html, { onOpenTag })
+    expect(onOpenTag).not.toHaveBeenCalled()
   })
 
   it('ignores code quotes', () => {
+    // Script
     let html = `
       <script>
         const fu = '<div>'
@@ -151,6 +164,7 @@ aria-disabled></div>`
       expect.objectContaining({ name: 'script' }),
     )
 
+    // Style
     html = `
       <style>
         a::after {
@@ -164,5 +178,11 @@ aria-disabled></div>`
       1,
       expect.objectContaining({ name: 'style' }),
     )
+
+    // PHP (outside of an HTML tag)
+    html = `<?php $a = "<div>"; $b = '<img>' ?>`
+    onOpenTag = vi.fn()
+    parse(html, { onOpenTag })
+    expect(onOpenTag).not.toHaveBeenCalled()
   })
 })
