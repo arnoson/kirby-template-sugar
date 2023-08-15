@@ -29,13 +29,30 @@ export const joinLines = (lines: { text: string; line: number }[]) => {
   return result
 }
 
-export const resolvePhpValue = (value: string) => {
-  const match = value.match(/^<\?(?:php|=)?(.*)\?>$/s)
-  const valueIsPhp = !!match
-  return valueIsPhp ? match[1].trim() : `'${value}'`
+export const phpTagsToConcatenation = (
+  value: string,
+  isInsideQuotes = false,
+) => {
+  const startsWithPhp = /^<\?(php|=)?/i.test(value)
+  const endsWithPhp = value.endsWith('?>')
+
+  if (!startsWithPhp && !isInsideQuotes) value = `'` + value
+  if (!endsWithPhp && !isInsideQuotes) value = value + `'`
+
+  value = value.replaceAll(/<\?(?:php|=)?/gi, (_, offset) => {
+    const isStart = offset === 0
+    return isStart && !isInsideQuotes ? '' : `' .`
+  })
+
+  value = value.replaceAll('?>', (_, offset) => {
+    const isEnd = offset === value.length - 2
+    return isEnd && !isInsideQuotes ? '' : `. '`
+  })
+
+  return value.trim()
 }
 
-export const resolveCssValue = (value: string) => {
+export const resolveCssVarShorthand = (value: string) => {
   const valueIsCssVar = value.startsWith('--')
   return valueIsCssVar ? `var(${value})` : value
 }

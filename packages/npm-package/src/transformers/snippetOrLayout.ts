@@ -1,5 +1,9 @@
 import { Tag, Attribute } from '../types'
-import { joinLines, resolveCssValue, resolvePhpValue } from '../utils'
+import {
+  joinLines,
+  resolveCssVarShorthand,
+  phpTagsToConcatenation,
+} from '../utils'
 
 const match = ({ name }: Tag) =>
   name.startsWith('snippet:') || name.startsWith('layout')
@@ -37,9 +41,16 @@ const transformOpenTag = (tag: Tag): string => {
     const isLastCssVar = index === lastCssVarIndex
     const isOnlyCssVar = isFirstCssVar && isLastCssVar
 
-    const value = isCssVar
-      ? resolveCssValue(attribute.value)
-      : resolvePhpValue(attribute.value)
+    // CSS vars are grouped into a style attribute, so we are already inside
+    // inside quotes: `'style' => '--a: fu; --b: bar'`, whereas normal
+    // attributes are not inside quotes and we have to add them: `'attr' => 'string'`.
+    let isInsideQuotes = isCssVar
+
+    // PHP tags inside attribute values would generate invalid code (because we
+    // are already inside PHP): `'attr' => 'id-<?= $id ?>'`. So we need to
+    // translate them to string concatenation: `'attr' => 'id-' . $id`.
+    let value = phpTagsToConcatenation(attribute.value, isInsideQuotes)
+    if (isCssVar) value = resolveCssVarShorthand(value)
 
     let text = indent
     if (isOnlyCssVar) {

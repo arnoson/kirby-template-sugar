@@ -19,14 +19,14 @@ describe('transform', () => {
       @myProp="value"
       @myPhpProp="<? [1, 2, 3] ?>"
       class="red"
-      id="<?= $id ?>"
+      id="id-<?= $id ?>-fu"
       aria-label="<?php 'text' ?>"
     />`
     const output = `<?php snippet('test', __snippetData([
       '@myProp' => 'value',
       '@myPhpProp' => [1, 2, 3],
       'class' => 'red',
-      'id' => $id,
+      'id' => 'id-' . $id . '-fu',
       'aria-label' => 'text',
     ])); ?>`
     expect(transform(input)).toBe(output)
@@ -59,12 +59,12 @@ describe('transform', () => {
   it('handles CSS variables', () => {
     // Snippet
     let input = `<snippet:test
-      --a="1rem"
+      --a="<?= $variable ?>"
       --b="2rem"
       --c="3rem"
     />`
     let output = `<?php snippet('test', __snippetData([
-      'style' => '--a: 1rem;
+      'style' => '--a: ' . $variable . ';
       --b: 2rem;
       --c: 3rem',
     ])); ?>`
@@ -81,12 +81,14 @@ describe('transform', () => {
       class="red"
       --a="1rem"
       --b="--shorthand"
+      --c="<?= $val ?>rem"
     ></div>`
     output = `<div
       <?= classes('article')->merge($attr) ?>
       class="red"
       style="--a: 1rem;
-      --b: var(--shorthand)"
+      --b: var(--shorthand);
+      --c: <?= $val ?>rem"
     ></div>`
     expect(transform(input)).toBe(output)
   })

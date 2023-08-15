@@ -1,5 +1,5 @@
 import { Attribute, Tag } from '../types'
-import { joinLines, resolveCssValue } from '../utils'
+import { joinLines, resolveCssVarShorthand } from '../utils'
 
 // We can leave most HTML tags as is. We only have to transform them if they use
 // the CSS variable attribute syntax, like `<div --color="red" >`.
@@ -34,7 +34,9 @@ const transformOpenTag = (tag: Tag) => {
     const isLastCssVar = index === lastCssVarIndex
     const isOnlyCssVar = isFirstCssVar && isLastCssVar
 
-    const value = isCssVar ? resolveCssValue(attribute.value) : attribute.value
+    const value = isCssVar
+      ? resolveCssVarShorthand(attribute.value)
+      : attribute.value
 
     let text = indent
     if (isOnlyCssVar) {
