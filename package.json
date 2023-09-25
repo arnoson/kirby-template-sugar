@@ -1,6 +1,6 @@
 {
   "name": "@kirby-template-sugar/monorepo",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "license": "MIT",
   "scripts": {
     "dev": "pnpm -r dev",
