@@ -23,8 +23,8 @@ importers:
         specifier: ^3.5.3
         version: 3.5.3
       glob:
-        specifier: ^10.3.7
-        version: 10.3.7
+        specifier: 10.3.6
+        version: 10.3.6
       magic-string:
         specifier: ^0.30.3
         version: 0.30.3
@@ -817,8 +817,8 @@ packages:
     dependencies:
       is-glob: 4.0.3
 
-  /glob@10.3.7:
-    resolution: {integrity: sha512-wCMbE1m9Nx5yD9LYtgsVWq5VhHlk5WzJirw594qZR6AIvQYuHrdDtIktUVjQItalD53y7dqoedu9xP0u0WaxIQ==}
+  /glob@10.3.6:
+    resolution: {integrity: sha512-mEfImdc/fiYHEcF6pHFfD2b/KrdFB1qH9mRe5vI5HROF8G51SWxQJ2V56Ezl6ZL9y86gsxQ1Lgo2S746KGUPSQ==}
     engines: {node: '>=16 || 14 >=14.17'}
     hasBin: true
     dependencies:
