@@ -41,7 +41,5 @@ jobs:
       - name: Test
         run: pnpm test
 
-      # TODO: re-enable type checking, as soon glob dependencie is correctly
-      # resolved in github action.
-      # - name: Check Types
-      #   run: pnpm check-types
+      - name: Check Types
+        run: pnpm check-types

@@ -17,7 +17,7 @@
   "dependencies": {
     "cac": "^6.7.14",
     "chokidar": "^3.5.3",
-    "glob": "^10.3.7",
+    "glob": "^10.3.6",
     "magic-string": "^0.30.3"
   },
   "devDependencies": {

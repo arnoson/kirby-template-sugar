@@ -1,6 +1,6 @@
 import { existsSync } from 'fs'
 import { mkdir, readFile, writeFile } from 'fs/promises'
-// import { glob, hasMagic } from 'glob'
+import { glob, hasMagic } from 'glob'
 import { dirname, join } from 'path'
 import { transform } from './transform'
 import { Options } from './types'
@@ -24,8 +24,9 @@ export const transformFile = async (file: string, options: Options) => {
 }
 
 export const transformFiles = async (pattern: string, options: Options) => {
-  // const files = hasMagic(pattern)
-  //   ? await glob(pattern, { cwd: options.root })
-  //   : [pattern]
-  // files.forEach((file) => transformFile(file, options))
+  const files = hasMagic(pattern)
+    ? await glob(pattern, { cwd: options.root })
+    : [pattern]
+
+  files.forEach((file) => transformFile(file, options))
 }
