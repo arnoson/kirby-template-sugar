@@ -4,8 +4,8 @@ require __DIR__ . '/../index.php';
 
 it('handles snippet props and groups attributes', function() {
   $input = [
-    '@myProp' => 123,
-    '@myOtherProp' => 'test',
+    '$myProp' => 123,
+    '$myOtherProp' => 'test',
     'class' => 'red',
     'aria-label' => 'text'
   ];
@@ -23,7 +23,7 @@ it('handles snippet props and groups attributes', function() {
 });
 
 it('provides an empty attr array', function() {
-  $input = ['@prop' => true];
+  $input = ['$prop' => true];
   $output = ['prop' => true, 'attr' => []];
   
   expect(__snippetData($input))->toEqual($output);

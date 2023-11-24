@@ -43,5 +43,5 @@ watchFiles('**/*.kirby', options)
 transformFiles('**/*.kirby', options)
 
 // or compile a string
-const result = transform(`<snippet:test @prop="<? true ?>" />`)
+const result = transform(`<snippet:test $prop="<? true ?>" />`)
 ```

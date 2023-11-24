@@ -7,8 +7,7 @@ function __snippetData(array $attributes) {
   $attr = [];
   
   foreach($attributes as $key => $value) {
-    if (strpos($key, '@') === 0) {
-      // Remove the leading '@'
+    if (str_starts_with($key, '$')) {
       $name = substr($key, 1); 
       $data[$name] = $value;
     } else {
