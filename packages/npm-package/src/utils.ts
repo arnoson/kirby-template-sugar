@@ -30,9 +30,11 @@ export const joinLines = (lines: { text: string; line: number }[]) => {
 }
 
 export const phpTagsToConcatenation = (
-  value: string,
+  value: string | undefined,
   isInsideQuotes = false,
 ) => {
+  if (value === undefined) return
+
   const startsWithPhp = /^<\?(php|=)?/i.test(value)
   const endsWithPhp = value.endsWith('?>')
 
@@ -50,11 +52,6 @@ export const phpTagsToConcatenation = (
   })
 
   return value.trim()
-}
-
-export const resolveCssVarShorthand = (value: string) => {
-  const valueIsCssVar = value.startsWith('--')
-  return valueIsCssVar ? `var(${value})` : value
 }
 
 export const changeFileExtension = (filename: string, newExtension: string) =>

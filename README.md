@@ -10,13 +10,13 @@ A lightweight template compiler that adds some [syntactic sugar](https://en.wiki
 Kirby's new [snippets with slots](https://getkirby.com/docs/guide/templates/snippets#passing-slots-to-snippets) allow you to adapt a component-based workflow, similar to Laravel blade templates or javascript frameworks like Vue. However, the plain php syntax can be verbose. So with some template sugar you can write this:
 
 ```html
-<snippet:card @rounded="<? true ?>" class="bg-yellow" id="my-card">
+<snippet:card $rounded="<? true ?>" class="bg-yellow" id="my-card">
   <slot:icon>🍬</slot:icon>
   <slot:title>
     <h2>Kirby Template Sugar</h2>
   </slot:title>
   <slot>
-    <snippet:link @url="github.com/arnoson/kirby-template-sugar">
+    <snippet:link $url="github.com/arnoson/kirby-template-sugar">
       <i>Read more ...</i>
     </snippet:link>
   </slot>
@@ -98,7 +98,7 @@ Snippets can have slots or be self-closing:
 
 ### Props and attributes
 
-Snippets can have `props`, which are passed directly to the snippet, and attributes, which are grouped into an `$attr` variable passed to the snippet along with the props. Props start with `@` (like `@open` and `@items`) and attributes are just specified like regular html attributes (`class`, `aria-label`).
+Snippets can have `props`, which are passed directly to the snippet, and attributes, which are grouped into an `$attr` variable passed to the snippet along with the props. Props start with `$` (like `$open` and `$items`) and attributes are just specified like regular html attributes (`class`, `aria-label`).
 
 If you want to pass a php expression to a snippet, e.g.: `items => $site->children()->listed()`, you just have to wrap it in php tags (see the code below):
 
@@ -112,8 +112,8 @@ If you want to pass a php expression to a snippet, e.g.: `items => $site->childr
 
 ```html
 <snippet:menu
-  @open="<? true ?>"
-  @items="<? $site->children()->listed() ?>"
+  $open="<? true ?>"
+  $items="<? $site->children()->listed() ?>"
   class="bg-red"
   aria-label="Main Menu"
 />
@@ -149,8 +149,8 @@ Well... actually the compiled code looks like this. To make debugging easier, th
 
 ```html
 <snippet:menu
-  @open="<? true ?>"
-  @items="<? $site->children() ?>"
+  $open="<? true ?>"
+  $items="<? $site->children() ?>"
   class="bg-red"
   aria-label="Main Menu"
 />
@@ -161,8 +161,8 @@ Well... actually the compiled code looks like this. To make debugging easier, th
 
 ```php
 <?php snippet('menu', __snippetData([
-  '@open' => true,
-  '@items' => $site->children(),
+  '$open' => true,
+  '$items' => $site->children(),
   'class' => 'bg-red',
   'aria-label' => 'Main Menu'
 ])); ?>
@@ -188,6 +188,24 @@ Or even better with @fabianmichael's fantastic [kirby-template-attributes](https
 <nav <?= classes('menu', ['menu--open' => $open])->merge($attr) ?>>
   <?php foreach ($items as $item) { /* ... */ } ?>
 </nav>
+```
+
+### Prop shorthand syntax
+
+If your prop names and php variable names are the same you can use the shorthand syntax:
+
+```php
+<?php foreach ($projects as $project): ?>
+  <snippet:project $project />
+<?php endforeach ?>
+```
+
+Would be the same as:
+
+```php
+<?php foreach ($projects as $project): ?>
+  <snippet:project $project="<? $project ?>" />
+<?php endforeach ?>
 ```
 
 ### CSS Variables
@@ -272,8 +290,8 @@ Or with slots and even props and attributes
 
 ```html
 <layout:gallery
-  @showMenu="<? false ?>"
-  @layout="portrait"
+  $showMenu="<? false ?>"
+  $layout="portrait"
 >
 
 <slot:img><img /></slot:img>
@@ -288,8 +306,8 @@ Or with slots and even props and attributes
 
 ```php
 <?php layout('gallery', __snippetData([
-  '@showMenu' => false,
-  '@layout' => 'portrait'
+  '$showMenu' => false,
+  '$layout' => 'portrait'
 ])); ?>
 
 <?php slot('img'); ?><img /><?php endslot(/* img */); ?>

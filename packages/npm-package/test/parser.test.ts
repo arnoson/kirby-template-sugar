@@ -20,12 +20,12 @@ aria-disabled></div>`
         // prettier-ignore
         attributes: [
           { name: 'id', value: 'fu', indent: '  ', line: 1, isPhp: false },
-          { name: 'disabled', value: '', indent: '  ', line: 2, isPhp: false },
+          { name: 'disabled', value: undefined, indent: '  ', line: 2, isPhp: false },
           { name: 'class', value: '<?= $bar ?>', indent: '  ', line: 3, isPhp: false },
           { name: 'data-1', value: '1', indent: ' ', line: 3, isPhp: false },
           { name: 'data-2', value: '2', indent: '\t', line: 4, isPhp: false },
           { name: 'data-3', value: '3', indent: '\t\t', line: 4, isPhp: false },
-          { name: 'aria-disabled', value: '', indent: '', line: 5, isPhp: false },
+          { name: 'aria-disabled', value: undefined, indent: '', line: 5, isPhp: false },
         ],
         isSelfClosing: false,
       }),

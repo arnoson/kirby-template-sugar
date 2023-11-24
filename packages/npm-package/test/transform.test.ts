@@ -16,18 +16,32 @@ describe('transform', () => {
 
   it('handles snippet attributes', () => {
     const input = `<snippet:test
-      @myProp="value"
-      @myPhpProp="<? [1, 2, 3] ?>"
+      $myProp="value"
+      $myPhpProp="<? [1, 2, 3] ?>"
       class="red"
       id="id-<?= $id ?>-fu"
       aria-label="<?php 'text' ?>"
     />`
     const output = `<?php snippet('test', __snippetData([
-      '@myProp' => 'value',
-      '@myPhpProp' => [1, 2, 3],
+      '$myProp' => 'value',
+      '$myPhpProp' => [1, 2, 3],
       'class' => 'red',
       'id' => 'id-' . $id . '-fu',
       'aria-label' => 'text',
+    ])); ?>`
+    expect(transform(input)).toBe(output)
+  })
+
+  it('handles attribute shorthands', () => {
+    const input = `<snippet:test
+      $a="<?= $a ?>"
+      $b
+      $c
+    />`
+    const output = `<?php snippet('test', __snippetData([
+      '$a' => $a,
+      '$b' => $b,
+      '$c' => $c,
     ])); ?>`
     expect(transform(input)).toBe(output)
   })
@@ -47,8 +61,8 @@ describe('transform', () => {
   })
 
   it('handles layouts', () => {
-    let input = `<layout @myProp="<? $prop ?>" />`
-    let output = `<?php layout('default', __snippetData([ '@myProp' => $prop, ])); ?>`
+    let input = `<layout $myProp="<? $prop ?>" />`
+    let output = `<?php layout('default', __snippetData([ '$myProp' => $prop, ])); ?>`
     expect(transform(input)).toBe(output)
 
     input = `<layout:name class="no-js" />`

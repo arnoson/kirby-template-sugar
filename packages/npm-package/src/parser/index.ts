@@ -31,7 +31,7 @@ let tag = createTag()
 
 const createAttribute = (data: Partial<Attribute> = {}): Attribute => ({
   name: '',
-  value: '',
+  value: undefined,
   isPhp: false,
   line: tag?.lineCount ?? 0,
   indent: getIndent(html, position),
@@ -167,7 +167,7 @@ export const parse = (
 
         // Handle value-less attributes directly at the end of a tag,
         // like `<div aria-enabled>`.
-        if (attribute?.name) tag.attributes.push({ ...attribute, value: '' })
+        if (attribute?.name) tag.attributes.push(attribute)
         attribute = undefined
 
         const isCloseTag = tag.name.startsWith('/')
@@ -187,7 +187,7 @@ export const parse = (
         }
       } else if (isWhitespace(char)) {
         // Handle value-less attributes `<div aria-enabled class="fu">`.
-        if (attribute?.name) tag.attributes.push({ ...attribute, value: '' })
+        if (attribute?.name) tag.attributes.push(attribute)
         attribute = undefined
       } else if (char !== '=' && char !== '/') {
         attribute ??= createAttribute()

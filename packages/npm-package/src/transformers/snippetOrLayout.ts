@@ -1,9 +1,5 @@
-import { Tag, Attribute } from '../types'
-import {
-  joinLines,
-  resolveCssVarShorthand,
-  phpTagsToConcatenation,
-} from '../utils'
+import { Attribute, Tag } from '../types'
+import { joinLines, phpTagsToConcatenation } from '../utils'
 
 const match = ({ name }: Tag) =>
   name.startsWith('snippet:') || name.startsWith('layout')
@@ -36,7 +32,8 @@ const transformOpenTag = (tag: Tag): string => {
 
   const attributeLines = sortedAttributes.map((attribute, index) => {
     const { name, indent } = attribute
-    const isCssVar = attribute.name.startsWith('--')
+    const isCssVar = name.startsWith('--')
+    const isPhpVar = name.startsWith('$')
     const isFirstCssVar = index === firstCssVarIndex
     const isLastCssVar = index === lastCssVarIndex
     const isOnlyCssVar = isFirstCssVar && isLastCssVar
@@ -50,7 +47,14 @@ const transformOpenTag = (tag: Tag): string => {
     // are already inside PHP): `'attr' => 'id-<?= $id ?>'`. So we need to
     // translate them to string concatenation: `'attr' => 'id-' . $id`.
     let value = phpTagsToConcatenation(attribute.value, isInsideQuotes)
-    if (isCssVar) value = resolveCssVarShorthand(value)
+
+    // Allow css var shorthands: `<div --var="--fu" />` will be the same as
+    // `<div --var="var(--fu)" />`.
+    if (isCssVar) value = value.startsWith('--') ? `var(${value})` : value
+
+    // Allow php var shorthands: `<div $fu />` will be the same as
+    // `<div $fu="<? $fu ?>" >`.
+    if (isPhpVar) value ??= name
 
     let text = indent
     if (isOnlyCssVar) {
