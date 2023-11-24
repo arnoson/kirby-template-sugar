@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "pnpm -r dev",
-    "build": "pnpm -r build",
+    "build": "pnpm --filter \"./packages/**\" build",
     "test": "pnpm -r test",
     "check-types": "tsc --noEmit",
     "release": "bumpp -r"
