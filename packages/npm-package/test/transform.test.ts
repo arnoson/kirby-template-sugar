@@ -106,4 +106,10 @@ describe('transform', () => {
     ></div>`
     expect(transform(input)).toBe(output)
   })
+
+  it('handles windows-style line breaks', () => {
+    const input = '<div\r\n  --fu="1234"\r\n></div>'
+    const output = '<div\r\n  style="--fu: 1234"\n></div>'
+    expect(transform(input)).toBe(output)
+  })
 })
