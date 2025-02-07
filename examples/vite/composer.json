@@ -22,9 +22,9 @@
     "source": "https://github.com/getkirby/starterkit"
   },
   "require": {
-    "php": ">=8.0.0 <8.3.0",
-    "getkirby/cms": "^3.9",
-    "arnoson/kirby-vite": "^3.0"
+    "php": ">=8.0.0 <8.4.0",
+    "getkirby/cms": "^4.6",
+    "arnoson/kirby-vite": "^5.4"
   },
   "config": {
     "allow-plugins": {

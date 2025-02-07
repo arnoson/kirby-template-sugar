@@ -5,6 +5,7 @@ site/plugins/*
 !site/plugins/kirby-template-sugar
 site/templates/*
 site/snippets/*
+site/config/vite.config.php
 .dev
 
 # System files
