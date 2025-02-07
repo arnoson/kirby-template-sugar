@@ -14,21 +14,42 @@ describe('transform', () => {
     expect(transform(input)).toBe(output)
   })
 
-  it('handles snippet attributes', () => {
-    const input = `<snippet:test
+  it('handles attributes', () => {
+    // Snippet/layout
+    let input = `<snippet:test
       $myProp="value"
       $myPhpProp="<? [1, 2, 3] ?>"
       class="red"
       id="id-<?= $id ?>-fu"
       aria-label="<?php 'text' ?>"
+      data-open
     />`
-    const output = `<?php snippet('test', __snippetData([
+    let output = `<?php snippet('test', __snippetData([
       '$myProp' => 'value',
       '$myPhpProp' => [1, 2, 3],
       'class' => 'red',
       'id' => 'id-' . $id . '-fu',
       'aria-label' => 'text',
+      'data-open' => '',
     ])); ?>`
+    expect(transform(input)).toBe(output)
+
+    // Normal tag
+    // Nothing special happening here, but since normal tags are also
+    // transformed to allow setting css variables with the --var="123" syntax
+    // we have to make sure all other attributes are ignored by the transform.
+    input = `<div
+      class="red"
+      id="id-<?= $id ?>-fu"
+      aria-label="<?php 'text' ?>"
+      data-open
+    ></div>`
+    output = `<div
+      class="red"
+      id="id-<?= $id ?>-fu"
+      aria-label="<?php 'text' ?>"
+      data-open
+    ></div>`
     expect(transform(input)).toBe(output)
   })
 

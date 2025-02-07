@@ -51,7 +51,7 @@ const transformOpenTag = (tag: Tag) => {
     } else if (attribute.isPhp) {
       text += value
     } else {
-      text += `${name}="${value}"`
+      text += value === undefined ? name : `${name}="${value}"`
     }
 
     return { text, line: attribute.line }

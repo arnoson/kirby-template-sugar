@@ -66,7 +66,7 @@ const transformOpenTag = (tag: Tag): string => {
     } else if (isCssVar) {
       text += `${name}: ${value};`
     } else {
-      text += `'${name}' => ${value},`
+      text += `'${name}' => ${value ?? "''"},`
     }
 
     return { text, line: attribute.line }
