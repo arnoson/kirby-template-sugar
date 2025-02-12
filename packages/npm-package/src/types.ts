@@ -15,6 +15,7 @@ export interface Attribute {
 export interface Tag {
   name: string
   attributes: Attribute[]
+  isCloseTag: boolean
   isSelfClosing: boolean
   lineCount: number
   startIndex: number
