@@ -38,17 +38,21 @@ describe('transform', () => {
     // Nothing special happening here, but since normal tags are also
     // transformed to allow setting css variables with the --var="123" syntax
     // we have to make sure all other attributes are ignored by the transform.
+    // Note: we have to set a css variable, otherwise the tag will not be
+    // transformed.
     input = `<div
       class="red"
       id="id-<?= $id ?>-fu"
-      aria-label="<?php 'text' ?>"
+      aria-label="<?php "text" ?>"
       data-open
+      --color="yellow"
     ></div>`
     output = `<div
       class="red"
       id="id-<?= $id ?>-fu"
-      aria-label="<?php 'text' ?>"
+      aria-label="<?php "text" ?>"
       data-open
+      style="--color: yellow"
     ></div>`
     expect(transform(input)).toBe(output)
   })

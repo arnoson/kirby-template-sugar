@@ -1,10 +1,13 @@
+import { Tag } from '../types'
+
 export const isWhitespace = (char: string) =>
   char === ' ' || char === '\t' || char === '\n' || char === '\r'
 
 export const isQuote = (char: string) =>
   char === `'` || char === `"` || char === '`'
 
-export const isCodeTag = (name: string) => name === 'script' || name === 'style'
+export const isCodeTag = ({ name }: Tag) =>
+  name === 'script' || name === 'style'
 
 export const getIndent = (string: string, position: number) => {
   let indent = ''
