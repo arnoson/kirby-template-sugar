@@ -37,13 +37,13 @@ export const readPhp = ({ read, peek }: Stream) => {
       } else if (char === '/' && peek() === '*') {
         state = 'block-comment'
       } else if (char === '<' && peek() === '<' && peek(1) === '<') {
-        buffer += read(2) // consume the <<
+        buffer += read(2) // <<
         state = 'heredoc'
         heredocTag = ''
         while (peek() !== undefined && peek() !== '\n') heredocTag += read()
         buffer += heredocTag
       } else if (char === '?' && peek() === '>') {
-        buffer += read() // consume the >
+        buffer += read() // >
         return buffer
       }
       continue
@@ -65,7 +65,7 @@ export const readPhp = ({ read, peek }: Stream) => {
       if (char === '\n') {
         state = 'normal'
       } else if (char === '?' && peek() === '>') {
-        buffer += read() // consume the <
+        buffer += read() // <
         return buffer
       }
       continue
@@ -90,8 +90,7 @@ export const readPhp = ({ read, peek }: Stream) => {
         }
 
         if (heredocEndFound && heredocEndTag.trim() === heredocTag) {
-          // Consume the end tag + ;
-          buffer += read(heredocEndTag.length + 1)
+          buffer += read(heredocEndTag.length + 1) // end tag + ;
           state = 'normal'
         }
       }
