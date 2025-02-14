@@ -12,7 +12,7 @@ export const parse = (
   input: string,
   { onOpenTag, onCloseTag }: ParseOptions = {},
 ) => {
-  let position = 0
+  let position = -1
   let state: 'normal' | 'tag' | 'attribute-name' | 'attribute-value' = 'normal'
   let currentTag: Tag | undefined
   let currentAttribute: Attribute | undefined
@@ -35,7 +35,7 @@ export const parse = (
     value: undefined,
     isPhp: false,
     line: currentTag?.lineCount ?? 0,
-    indent: getIndent(position - 1),
+    indent: getIndent(position),
     ...data,
   })
 
@@ -49,24 +49,27 @@ export const parse = (
     return indent
   }
 
-  const peek = (offset = 0) => input[position + offset]
+  const peek = (offset = 0) => input[position + 1 + offset]
 
   const read = (length = 1) => {
-    if (position + length > input.length) return
-    const chunk = input.slice(position, position + length)
-    position += length
+    let chunk = ''
+    for (let i = 0; i < length; i++) {
+      const char = input[++position]
+      if (char === undefined) break
+      chunk += char
+    }
     return chunk
   }
 
   let char: string
-  while (position < input.length) {
+  while (position < input.length - 1) {
     const prevChar = char
     char = read()
 
     if (char === '\n' && currentTag) currentTag.lineCount++
 
     if (state === 'normal') {
-      if (char === '<' && input.slice(position, position + 3) === '!--') {
+      if (char === '<' && input.slice(position, position + 4) === '<!--') {
         read(3) // !--
         // Ignore everything inside the comment
         while (peek(0) !== '-' || peek(1) !== '-' || peek(2) !== '>') read()
@@ -74,7 +77,7 @@ export const parse = (
       } else if (char === '<' && peek() === '?') {
         readPhp({ read, peek })
       } else if (char === '<') {
-        const startIndex = position - 1
+        const startIndex = position
         let name = ''
         while (![' ', '\n', '\t', '>'].includes(peek())) name += read()
 
@@ -96,10 +99,10 @@ export const parse = (
     if (state === 'tag') {
       if (char === '>') {
         currentTag.isSelfClosing = prevChar === '/'
-        currentTag.endIndex = position - 1
+        currentTag.endIndex = position
         currentTag.indentBeforeEnd = currentTag.isSelfClosing
-          ? getIndent(position - 2)
-          : getIndent(position - 1)
+          ? getIndent(position - 1)
+          : getIndent(position)
 
         if (currentTag.isCloseTag) onCloseTag?.(currentTag)
         else onOpenTag?.(currentTag)
@@ -107,7 +110,7 @@ export const parse = (
         state = 'normal'
       } else if (char === '<' && peek() === '?') {
         // Php tags are stored as nameless attributes.
-        const startIndex = position - 1
+        const startIndex = position
         const value = '<' + readPhp({ read, peek })
         const attribute = createAttribute({
           value,
