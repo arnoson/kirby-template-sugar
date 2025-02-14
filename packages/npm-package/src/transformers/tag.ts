@@ -4,7 +4,7 @@ import { joinLines } from '../utils'
 // We can leave most HTML tags as is. We only have to transform them if they use
 // the CSS variable attribute syntax, like `<div --color="red" >`.
 const match = ({ attributes }: Tag) =>
-  attributes.some(({ name }) => name.startsWith('--'))
+  attributes.some(({ name }) => name?.startsWith('--'))
 
 const transformOpenTag = (tag: Tag) => {
   const firstLine = {
@@ -18,7 +18,7 @@ const transformOpenTag = (tag: Tag) => {
   const cssVars: Attribute[] = []
   const otherAttributes: Attribute[] = []
   for (const attribute of tag.attributes) {
-    const isCssVar = attribute.name.startsWith('--')
+    const isCssVar = attribute.name?.startsWith('--')
     if (isCssVar) cssVars.push(attribute)
     else otherAttributes.push(attribute)
   }
@@ -29,7 +29,7 @@ const transformOpenTag = (tag: Tag) => {
 
   const attributeLines = sortedAttributes.map((attribute, index) => {
     const { name, indent } = attribute
-    const isCssVar = attribute.name.startsWith('--')
+    const isCssVar = attribute.name?.startsWith('--')
     const isFirstCssVar = index === firstCssVarIndex
     const isLastCssVar = index === lastCssVarIndex
     const isOnlyCssVar = isFirstCssVar && isLastCssVar
@@ -37,7 +37,7 @@ const transformOpenTag = (tag: Tag) => {
     let value = attribute.value
     // Allow css var shorthands: `<div --var="--fu" />` will be the same as
     // `<div --var="var(--fu)" />`.
-    if (isCssVar) value = value.startsWith('--') ? `var(${value})` : value
+    if (isCssVar) value = value?.startsWith('--') ? `var(${value})` : value
 
     let text = indent
     if (isOnlyCssVar) {

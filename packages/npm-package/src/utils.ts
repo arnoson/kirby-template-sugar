@@ -47,7 +47,7 @@ export const phpTagsToConcatenation = (
   })
 
   value = value.replaceAll('?>', (_, offset) => {
-    const isEnd = offset === value.length - 2
+    const isEnd = offset === value!.length - 2
     return isEnd && !isInsideQuotes ? '' : `. '`
   })
 
