@@ -18,27 +18,6 @@ export const parse = (
   let currentAttribute: Attribute | undefined
   let attributeQuote: `"` | `'` = `"`
 
-  const createTag = (data: Partial<Tag> = {}): Tag => ({
-    name: '',
-    attributes: [],
-    isCloseTag: false,
-    isSelfClosing: false,
-    startIndex: 0,
-    endIndex: 0,
-    lineCount: 0,
-    indentBeforeEnd: '',
-    ...data,
-  })
-
-  const createAttribute = (data: Partial<Attribute> = {}): Attribute => ({
-    name: '',
-    value: undefined,
-    isPhp: false,
-    line: currentTag?.lineCount ?? 0,
-    indent: getIndent(position),
-    ...data,
-  })
-
   const getIndent = (position: number) => {
     let indent = ''
     while (position >= 0) {
@@ -61,7 +40,7 @@ export const parse = (
     return chunk
   }
 
-  let char: string
+  let char: string | undefined
   while (position < input.length - 1) {
     const prevChar = char
     char = read()
@@ -88,12 +67,24 @@ export const parse = (
         if (!isInsideCodeBlock || isCodeCloseTag) {
           const isCloseTag = name.startsWith('/')
           name = name.replace('/', '')
-          currentTag = createTag({ name, isCloseTag, startIndex })
+          currentTag = {
+            name,
+            isCloseTag,
+            startIndex,
+            attributes: [],
+            endIndex: 0,
+            lineCount: 0,
+            isSelfClosing: false,
+            indentBeforeEnd: '',
+          }
           state = 'tag'
         }
       }
       continue
     }
+
+    // All further state needs a current tag.
+    if (!currentTag) throw new Error('No current tag')
 
     if (state === 'tag') {
       if (char === '>') {
@@ -111,18 +102,21 @@ export const parse = (
         // Php tags are stored as nameless attributes.
         const startIndex = position
         const value = '<' + readPhp({ read, peek })
-        const attribute = createAttribute({
-          value,
-          indent: getIndent(startIndex),
-          isPhp: true,
-        })
+        const line = currentTag.lineCount
+        const indent = getIndent(startIndex)
+        const attribute = { name: '', isPhp: true, value, line, indent }
         currentTag.attributes.push(attribute)
       } else if (char !== '/' && !isWhitespace(char)) {
-        currentAttribute = createAttribute({ name: char })
+        const line = currentTag.lineCount
+        const indent = getIndent(position)
+        currentAttribute = { name: char, isPhp: false, line, indent }
         state = 'attribute-name'
       }
       continue
     }
+
+    // All further state needs a current attribute.
+    if (!currentAttribute) throw new Error('No current attribute')
 
     if (state === 'attribute-name') {
       if (isWhitespace(char)) {
@@ -145,6 +139,9 @@ export const parse = (
     }
 
     if (state === 'attribute-value') {
+      if (!currentTag) throw new Error('No current tag')
+      if (!currentTag) throw new Error('No current tag')
+
       if (char === attributeQuote) {
         currentTag.attributes.push(currentAttribute)
         state = 'tag'

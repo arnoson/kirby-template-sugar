@@ -21,7 +21,7 @@ export const readPhp = ({ read, peek }: Stream) => {
   let isEscaped = false
   let buffer = ''
 
-  let char: string
+  let char: string | undefined
   while ((char = read()) && char !== undefined) {
     buffer += char
 

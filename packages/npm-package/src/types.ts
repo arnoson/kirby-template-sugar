@@ -5,8 +5,8 @@ export interface Options {
 }
 
 export interface Attribute {
-  name: string
-  value: string
+  name?: string
+  value?: string
   isPhp: boolean
   line: number
   indent: string

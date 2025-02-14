@@ -21,7 +21,8 @@ const transformOpenTag = (tag: Tag): string => {
   const cssVars: Attribute[] = []
   const otherAttributes: Attribute[] = []
   for (const attribute of tag.attributes) {
-    const isCssVar = attribute.name.startsWith('--')
+    if (attribute.name === undefined) console.log('yikes!')
+    const isCssVar = attribute.name?.startsWith('--')
     if (isCssVar) cssVars.push(attribute)
     else otherAttributes.push(attribute)
   }
@@ -32,8 +33,8 @@ const transformOpenTag = (tag: Tag): string => {
 
   const attributeLines = sortedAttributes.map((attribute, index) => {
     const { name, indent } = attribute
-    const isCssVar = name.startsWith('--')
-    const isPhpVar = name.startsWith('$')
+    const isCssVar = name?.startsWith('--')
+    const isPhpVar = name?.startsWith('$')
     const isFirstCssVar = index === firstCssVarIndex
     const isLastCssVar = index === lastCssVarIndex
     const isOnlyCssVar = isFirstCssVar && isLastCssVar
@@ -50,7 +51,7 @@ const transformOpenTag = (tag: Tag): string => {
 
     // Allow css var shorthands: `<div --var="--fu" />` will be the same as
     // `<div --var="var(--fu)" />`.
-    if (isCssVar) value = value.startsWith('--') ? `var(${value})` : value
+    if (isCssVar) value = value?.startsWith('--') ? `var(${value})` : value
 
     // Allow php var shorthands: `<div $fu />` will be the same as
     // `<div $fu="<? $fu ?>" >`.
