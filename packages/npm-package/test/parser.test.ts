@@ -79,7 +79,14 @@ aria-disabled></div>`
   id="fu"
   <?= classes('article')->merge($attr) ?>
   class="bar"
-  <?php echo "?>" ?>
+  <?php
+    "?>"
+    '?>'
+    /* ?> */
+    $fu = <<<TEXT
+      ?>
+    TEXT;
+  ?>
 >`
     const onOpenTag = vi.fn()
     parse(html, { onOpenTag })
@@ -92,7 +99,7 @@ aria-disabled></div>`
           { name: 'id', value: 'fu', indent: '  ', line: 1, isPhp: false },
           { name: '', value: `<?= classes('article')->merge($attr) ?>`, indent: '  ', line: 2, isPhp: true },
           { name: 'class', value: 'bar', indent: '  ', line: 3, isPhp: false },
-          { name: '', value: `<?php echo "?>" ?>`, indent: '  ', line: 4, isPhp: true },
+          { name: '', value: `<?php\n    \"?>\"\n    '?>'\n    /* ?> */\n    $fu = <<<TEXT\n      ?>\n    TEXT;\n  ?>`, indent: '  ', line: 4, isPhp: true },
         ],
         isSelfClosing: false,
       }),
