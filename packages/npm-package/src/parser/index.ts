@@ -4,8 +4,6 @@ import { readPhp } from './readPhp'
 const isWhitespace = (char: string) =>
   char === ' ' || char === '\t' || char === '\n' || char === '\r'
 
-const isQuote = (char: string) => char === `'` || char === `"` || char === '`'
-
 const isCodeTag = ({ name }: Tag) => name === 'script' || name === 'style'
 
 export const parse = (
@@ -48,8 +46,7 @@ export const parse = (
     if (char === '\n' && currentTag) currentTag.lineCount++
 
     if (state === 'normal') {
-      // prettier-ignore
-      if (char === '<' && peek() === '!' && peek(1) === '-' && peek(2) === '-') {
+      if (char === '<' && input.slice(position + 1, position + 4) === '!--') {
         read(3) // !--
         // Ignore everything inside the comment
         while (peek(0) !== '-' || peek(1) !== '-' || peek(2) !== '>') read()
@@ -125,7 +122,7 @@ export const parse = (
       } else if (char === '/') {
         currentTag.attributes.push(currentAttribute)
         state = 'tag'
-      } else if (char === '=' && isQuote(peek())) {
+      } else if (char === '=' && (peek() === `"` || peek() === `'`)) {
         attributeQuote = read() as `'` | `"`
         state = 'attribute-value'
       } else {
