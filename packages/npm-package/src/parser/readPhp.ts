@@ -22,7 +22,7 @@ export const readPhp = ({ read, peek }: Stream) => {
   let buffer = ''
 
   let char: string
-  while ((char = read())) {
+  while ((char = read()) && char !== undefined) {
     buffer += char
 
     if (state === 'normal') {
@@ -40,7 +40,7 @@ export const readPhp = ({ read, peek }: Stream) => {
         buffer += read(2) // consume the <<
         state = 'heredoc'
         heredocTag = ''
-        while (peek() !== '\n') heredocTag += read()
+        while (peek() !== undefined && peek() !== '\n') heredocTag += read()
         buffer += heredocTag
       } else if (char === '?' && peek() === '>') {
         buffer += read() // consume the >
