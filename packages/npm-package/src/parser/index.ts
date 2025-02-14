@@ -69,24 +69,23 @@ export const parse = (
     if (char === '\n' && currentTag) currentTag.lineCount++
 
     if (state === 'normal') {
-      if (char === '<' && input.slice(position, position + 4) === '<!--') {
+      // prettier-ignore
+      if (char === '<' && peek() === '!' && peek(1) === '-' && peek(2) === '-') {
         read(3) // !--
         // Ignore everything inside the comment
         while (peek(0) !== '-' || peek(1) !== '-' || peek(2) !== '>') read()
         read(3) // -->
       } else if (char === '<' && peek() === '?') {
-        readPhp({ read, peek })
+        readPhp({ read, peek }) // Ignore php tag
       } else if (char === '<') {
         const startIndex = position
         let name = ''
         while (![' ', '\n', '\t', '>'].includes(peek())) name += read()
 
-        // Ignore everything inside code tags (script & style).
-        if (
-          !currentTag ||
-          !isCodeTag(currentTag) ||
-          name === `/${currentTag.name}`
-        ) {
+        // Ignore any tags inside code blocks (script, style).
+        const isInsideCodeBlock = currentTag && isCodeTag(currentTag)
+        const isCodeCloseTag = currentTag && name === `/${currentTag.name}`
+        if (!isInsideCodeBlock || isCodeCloseTag) {
           const isCloseTag = name.startsWith('/')
           name = name.replace('/', '')
           currentTag = createTag({ name, isCloseTag, startIndex })
@@ -142,7 +141,6 @@ export const parse = (
           state = 'tag'
         }
       }
-
       continue
     }
 
@@ -158,7 +156,6 @@ export const parse = (
         currentAttribute.value ??= ''
         currentAttribute.value += char
       }
-
       continue
     }
   }
