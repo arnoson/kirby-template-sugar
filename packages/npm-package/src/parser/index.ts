@@ -95,6 +95,9 @@ export const parse = (
         else onOpenTag?.(currentTag)
 
         state = 'normal'
+        if (currentTag.isCloseTag || currentTag.isSelfClosing) {
+          currentTag = undefined
+        }
       } else if (char === '<' && peek() === '?') {
         // Php tags are stored as nameless attributes.
         const startIndex = position
