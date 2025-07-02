@@ -56,7 +56,7 @@ export const parse = (
       } else if (char === '<') {
         const startIndex = position
         let name = ''
-        while (![' ', '\n', '\t', '>'].includes(peek())) name += read()
+        while (![' ', '\n', '\r', '\t', '>'].includes(peek())) name += read()
 
         // Ignore any tags inside code blocks (script, style).
         const isInsideCodeBlock = currentTag && isCodeTag(currentTag)
@@ -139,7 +139,6 @@ export const parse = (
     }
 
     if (state === 'attribute-value') {
-      if (!currentTag) throw new Error('No current tag')
       if (!currentTag) throw new Error('No current tag')
 
       if (char === attributeQuote) {
