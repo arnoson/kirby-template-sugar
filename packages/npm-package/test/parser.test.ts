@@ -44,7 +44,7 @@ aria-disabled></div>`
     )
   })
 
-  it.only('handles self closing tags', () => {
+  it('handles self closing tags', () => {
     const html = `<img />`
     const onOpenTag = vi.fn()
     const onCloseTag = vi.fn()
