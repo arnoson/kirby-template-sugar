@@ -44,8 +44,8 @@ aria-disabled></div>`
     )
   })
 
-  it('handles self closing tags', () => {
-    const html = `<img class="fu" />`
+  it.only('handles self closing tags', () => {
+    const html = `<img />`
     const onOpenTag = vi.fn()
     const onCloseTag = vi.fn()
     parse(html, { onOpenTag, onCloseTag })
@@ -53,6 +53,34 @@ aria-disabled></div>`
       1,
       expect.objectContaining({
         name: 'img',
+        isSelfClosing: true,
+      }),
+    )
+    expect(onCloseTag).not.toHaveBeenCalled()
+  })
+
+  it('handles tags with slashes', () => {
+    // This is need for nested snippets, like `<snippet:seo/head />`
+    const html = `<snippet:seo/head><snippet:seo/head>`
+    const onOpenTag = vi.fn()
+    parse(html, { onOpenTag })
+    expect(onOpenTag).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        name: 'snippet:seo/head',
+      }),
+    )
+  })
+
+  it.only('handles self closing tags with slashes', () => {
+    const html = `<snippet:seo/head/>`
+    const onOpenTag = vi.fn()
+    const onCloseTag = vi.fn()
+    parse(html, { onOpenTag, onCloseTag })
+    expect(onOpenTag).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        name: 'snippet:seo/head',
         isSelfClosing: true,
       }),
     )

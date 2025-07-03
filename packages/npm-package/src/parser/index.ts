@@ -56,14 +56,20 @@ export const parse = (
       } else if (char === '<') {
         const startIndex = position
         let name = ''
-        while (![' ', '\n', '\r', '\t', '>'].includes(peek())) name += read()
+        while (
+          !isWhitespace(peek()) &&
+          peek() !== '>' &&
+          !(peek() === '/' && peek(1) === '>')
+        ) {
+          name += read()
+        }
 
         // Ignore any tags inside code blocks (script, style).
         const isInsideCodeBlock = currentTag && isCodeTag(currentTag)
         const isCodeCloseTag = currentTag && name === `/${currentTag.name}`
         if (!isInsideCodeBlock || isCodeCloseTag) {
           const isCloseTag = name.startsWith('/')
-          name = name.replace('/', '')
+          if (isCloseTag) name = name.slice(1)
           currentTag = {
             name,
             isCloseTag,
