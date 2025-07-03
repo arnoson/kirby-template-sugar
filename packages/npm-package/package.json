@@ -1,7 +1,7 @@
 {
   "name": "kirby-template-sugar",
   "type": "module",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "main": "dist/index.js",
   "license": "MIT",
   "bin": {
