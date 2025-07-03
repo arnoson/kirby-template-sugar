@@ -72,7 +72,7 @@ aria-disabled></div>`
     )
   })
 
-  it.only('handles self closing tags with slashes', () => {
+  it('handles self closing tags with slashes', () => {
     const html = `<snippet:seo/head/>`
     const onOpenTag = vi.fn()
     const onCloseTag = vi.fn()
