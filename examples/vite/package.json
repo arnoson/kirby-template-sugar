@@ -6,9 +6,9 @@
     "build": "vite build"
   },
   "dependencies": {
-    "vite": "^6.3.5"
+    "vite": "^7.1.0"
   },
   "devDependencies": {
-    "vite-plugin-kirby": "^5.6.0"
+    "vite-plugin-kirby": "^5.6.1"
   }
 }
