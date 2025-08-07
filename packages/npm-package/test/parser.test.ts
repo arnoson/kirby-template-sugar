@@ -60,27 +60,27 @@ aria-disabled></div>`
   })
 
   it('handles tags with slashes', () => {
-    // This is need for nested snippets, like `<snippet:seo/head />`
-    const html = `<snippet:seo/head><snippet:seo/head>`
+    // This is need for nested snippets, like `<k:seo/head />`
+    const html = `<k:seo/head><k:seo/head>`
     const onOpenTag = vi.fn()
     parse(html, { onOpenTag })
     expect(onOpenTag).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
-        name: 'snippet:seo/head',
+        name: 'k:seo/head',
       }),
     )
   })
 
   it('handles self closing tags with slashes', () => {
-    const html = `<snippet:seo/head/>`
+    const html = `<k:seo/head/>`
     const onOpenTag = vi.fn()
     const onCloseTag = vi.fn()
     parse(html, { onOpenTag, onCloseTag })
     expect(onOpenTag).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
-        name: 'snippet:seo/head',
+        name: 'k:seo/head',
         isSelfClosing: true,
       }),
     )

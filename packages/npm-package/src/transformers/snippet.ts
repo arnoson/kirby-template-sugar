@@ -1,17 +1,16 @@
 import { Attribute, Tag } from '../types'
 import { joinLines, phpTagsToConcatenation } from '../utils'
 
-const match = ({ name }: Tag) =>
-  name.startsWith('snippet:') || name.startsWith('layout')
+const match = ({ name }: Tag) => name.startsWith('k:') && name !== 'k:slot'
 
 const transformOpenTag = (tag: Tag): string => {
-  const [type, name = 'default'] = tag.name.split(':')
+  const [, name = 'default'] = tag.name.split(':')
 
-  const slots = type === 'layout' || tag.isSelfClosing ? '' : ', slots: true'
-  if (!tag.attributes.length) return `<?php ${type}('${name}'${slots}); ?>`
+  const slots = tag.isSelfClosing ? '' : ', slots: true'
+  if (!tag.attributes.length) return `<?php snippet('${name}'${slots}); ?>`
 
   const firstLine = {
-    text: `<?php ${type}('${name}', __snippetData([`,
+    text: `<?php snippet('${name}', __snippetData([`,
     line: 0,
   }
 
@@ -82,8 +81,8 @@ const transformOpenTag = (tag: Tag): string => {
 }
 
 const transformCloseTag = (tag: Tag) => {
-  const [type, name] = tag.name.split(':')
-  return type === 'snippet' ? `<?php endsnippet(/* ${name} */); ?>` : ''
+  const [, name] = tag.name.split(':')
+  return `<?php endsnippet(/* ${name} */); ?>`
 }
 
-export const snippetOrLayout = { match, transformOpenTag, transformCloseTag }
+export const snippet = { match, transformOpenTag, transformCloseTag }

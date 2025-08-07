@@ -3,20 +3,20 @@ import { transform } from '../src/transform'
 
 describe('transform', () => {
   it('handles snippets', () => {
-    const input = `<snippet:test></snippet:test>`
+    const input = `<k:test></k:test>`
     const output = `<?php snippet('test', slots: true); ?><?php endsnippet(/* test */); ?>`
     expect(transform(input)).toBe(output)
   })
 
   it('handles self closing snippets', () => {
-    const input = `<snippet:test />`
+    const input = `<k:test />`
     const output = `<?php snippet('test'); ?>`
     expect(transform(input)).toBe(output)
   })
 
   it('handles attributes', () => {
-    // Snippet/layout
-    let input = `<snippet:test
+    // Snippet
+    let input = `<k:test
       $myProp="value"
       $myPhpProp="<? [1, 2, 3] ?>"
       class="red"
@@ -58,7 +58,7 @@ describe('transform', () => {
   })
 
   it('handles attribute shorthands', () => {
-    const input = `<snippet:test
+    const input = `<k:test
       $a="<?= $a ?>"
       $b
       $c
@@ -72,32 +72,22 @@ describe('transform', () => {
   })
 
   it('handles slots', () => {
-    const input = `<snippet:test>
-      <slot>Default</slot>
-      <slot:name><?= $myContent ?></slot:name>
-    </snippet:test>
+    const input = `<k:test>
+      <k:slot>Default</k:slot>
+      <k:slot name="name"><?= $myContent ?></k:slot>
+    </k:test>
     `
     const output = `<?php snippet('test', slots: true); ?>
       <?php slot(); ?>Default<?php endslot(); ?>
-      <?php slot('name'); ?><?= $myContent ?><?php endslot(/* name */); ?>
+      <?php slot('name'); ?><?= $myContent ?><?php endslot(); ?>
     <?php endsnippet(/* test */); ?>
     `
     expect(transform(input)).toBe(output)
   })
 
-  it('handles layouts', () => {
-    let input = `<layout $myProp="<? $prop ?>" />`
-    let output = `<?php layout('default', __snippetData([ '$myProp' => $prop, ])); ?>`
-    expect(transform(input)).toBe(output)
-
-    input = `<layout:name class="no-js" />`
-    output = `<?php layout('name', __snippetData([ 'class' => 'no-js', ])); ?>`
-    expect(transform(input)).toBe(output)
-  })
-
   it('handles CSS variables', () => {
     // Snippet
-    let input = `<snippet:test
+    let input = `<k:test
       --a="<?= $variable ?>"
       --b="2rem"
       --c="3rem"
@@ -107,11 +97,6 @@ describe('transform', () => {
       --b: 2rem;
       --c: 3rem',
     ])); ?>`
-    expect(transform(input)).toBe(output)
-
-    // Layout
-    input = `<layout:test --shorthand="--my-var" />`
-    output = `<?php layout('test', __snippetData([ 'style' => '--shorthand: var(--my-var)' ])); ?>`
     expect(transform(input)).toBe(output)
 
     // Normal tag

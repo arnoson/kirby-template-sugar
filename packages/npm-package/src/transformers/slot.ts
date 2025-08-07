@@ -1,15 +1,12 @@
 import { Tag } from '../types'
 
-const match = ({ name }: Tag) => name.startsWith('slot')
+const match = ({ name }: Tag) => name.startsWith('k:slot')
 
 const transformOpenTag = (tag: Tag) => {
-  const [, name] = tag.name.split(':')
+  const name = tag.attributes.find((v) => v.name === 'name')?.value
   return name ? `<?php slot('${name}'); ?>` : `<?php slot(); ?>`
 }
 
-const transformCloseTag = (tag: Tag) => {
-  const [, name] = tag.name.split(':')
-  return name ? `<?php endslot(/* ${name} */); ?>` : `<?php endslot(); ?>`
-}
+const transformCloseTag = () => `<?php endslot(); ?>`
 
 export const slot = { match, transformOpenTag, transformCloseTag }

@@ -12,17 +12,17 @@ A lightweight template compiler that adds some [syntactic sugar](https://en.wiki
 Kirby's new [snippets with slots](https://getkirby.com/docs/guide/templates/snippets#passing-slots-to-snippets) allow you to adapt a component-based workflow, similar to Laravel blade templates or javascript frameworks like Vue. However, the plain php syntax can be verbose. So with some template sugar you can write this:
 
 ```html
-<snippet:card $rounded="<? true ?>" class="bg-yellow" id="my-card">
-  <slot:icon>🍬</slot:icon>
-  <slot:title>
+<k:card $rounded="<? true ?>" class="bg-yellow" id="my-card">
+  <k:slot name="icon">🍬</k:slot>
+  <k:slot name="title">
     <h2>Kirby Template Sugar</h2>
-  </slot:title>
-  <slot>
-    <snippet:link $url="github.com/arnoson/kirby-template-sugar">
+  </k:slot>
+  <k:slot>
+    <k:link $url="github.com/arnoson/kirby-template-sugar">
       <i>Read more ...</i>
-    </snippet:link>
-  </slot>
-</snippet:card>
+    </k:link>
+  </k:slot>
+</k:card>
 ```
 
 instead of this:
@@ -46,7 +46,7 @@ instead of this:
 
 ## How Does It Work
 
-Your template files need to be compiled into regular php, similar to how other template languages work. But the goal of this project is not to create a new full-fledged template language for Kirby. Instead it embraces the existing php templates and just adds a little sugar where they tend to get too messy. You still write php/html (with syntax highlighting, intellisense, ...) and add a special `<snippet>`, `<slot>` or `<layout>` tag here and there to keep things tidy.
+Your template files need to be compiled into regular php, similar to how other template languages work. But the goal of this project is not to create a new full-fledged template language for Kirby. Instead it embraces the existing php templates and just adds a little sugar where they tend to get too messy. You still write php/html (with syntax highlighting, intellisense, ...) and add a special `<k:my-snippet>` or `<k:slot>` tag here and there to keep things tidy.
 
 ## Getting Started
 
@@ -72,13 +72,13 @@ Snippets can have slots or be self-closing:
 <td valign="top">
 
 ```html
-<snippet:my-snippet>
-  <slot:title>
+<k:my-snippet>
+  <k:slot name="title">
     Hello
-  </slot:title>
-</snippet:my-snippet>
+  </k:slot>
+</k:my-snippet>
 
-<snippet:my-snippet />
+<k:my-snippet />
 ```
 
 </td>
@@ -113,7 +113,7 @@ If you want to pass a php expression to a snippet, e.g.: `items => $site->childr
 <td valign="top">
 
 ```html
-<snippet:menu
+<k:menu
   $open="<? true ?>"
   $items="<? $site->children()->listed() ?>"
   class="bg-red"
@@ -150,7 +150,7 @@ Well... actually the compiled code looks like this. To make debugging easier, th
 <td valign="top">
 
 ```html
-<snippet:menu
+<k:menu
   $open="<? true ?>"
   $items="<? $site->children() ?>"
   class="bg-red"
@@ -198,7 +198,7 @@ If your prop names and php variable names are the same you can use the shorthand
 
 ```php
 <?php foreach ($projects as $project): ?>
-  <snippet:project $project />
+  <k:project $project />
 <?php endforeach ?>
 ```
 
@@ -206,13 +206,13 @@ Would be the same as:
 
 ```php
 <?php foreach ($projects as $project): ?>
-  <snippet:project $project="<? $project ?>" />
+  <k:project $project="<? $project ?>" />
 <?php endforeach ?>
 ```
 
 ### CSS Variables
 
-You can assign CSS variables with an attribute-like syntax. This works on any tag, not just `<snippet>` and `<layout>`.
+You can assign CSS variables with an attribute-like syntax. This works on any tag, not just `<k:my-snippet>`.
 
 Note: you can omit the `var()` if you are referencing another variable name (like `--some-variable`).
 
@@ -225,7 +225,7 @@ Note: you can omit the `var()` if you are referencing another variable name (lik
 <td valign="top">
 
 ```html
-<snippet:point
+<k:point
   --x="10px"
   --y="--some-variable"
 />
@@ -243,80 +243,6 @@ Note: you can omit the `var()` if you are referencing another variable name (lik
 ])); ?>
 
 <img style="--padding: 2rem" />
-```
-
-</td>
-</tr>
-</table>
-
-### Layouts
-
-If you also use Kirby's [layouts](https://github.com/getkirby/layouts) you can define them with the `<layout>` tag:
-
-<table>
-<tr>
-<th width="500px">With Sugar</th>
-<th width="500px">Compiled</th>
-</tr>
-<tr>
-<td valign="top">
-
-```html
-<layout>
-
-Your Content ...
-```
-
-</td>
-<td valign="top">
-
-```php
-<?php layout('default'); ?>
-
-Your Content ...
-```
-
-</td>
-</tr>
-</table>
-
-Or with slots and even props and attributes
-
-<table>
-<tr>
-<th width="500px">With Sugar</th>
-<th width="500px">Compiled</th>
-</tr>
-<tr>
-<td valign="top">
-
-```html
-<layout:gallery
-  $showMenu="<? false ?>"
-  $layout="portrait"
->
-
-<slot:img><img /></slot:img>
-
-<slot:caption>
-  An image
-</slot:caption>
-```
-
-</td>
-<td valign="top">
-
-```php
-<?php layout('gallery', __snippetData([
-  '$showMenu' => false,
-  '$layout' => 'portrait'
-])); ?>
-
-<?php slot('img'); ?><img /><?php endslot(/* img */); ?>
-
-<?php slot('caption'); ?>
-  An image
-<?php endslot(/* caption */); ?>
 ```
 
 </td>
