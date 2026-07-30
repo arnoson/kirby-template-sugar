@@ -59,7 +59,9 @@ export const phpTagsToConcatenation = (
   const textSegments = segments.filter(
     (segment) => !(segment.type === 'text' && segment.content === ''),
   )
-  if (textSegments.length === 0) textSegments.push({ type: 'text', content: '' })
+  if (textSegments.length === 0) {
+    textSegments.push({ type: 'text', content: '' })
+  }
 
   if (isInsideQuotes) {
     // The result is placed inside an outer PHP string that is already open,
