@@ -2,5 +2,10 @@ packages:
   - packages/*
   - examples/*
 
-onlyBuiltDependencies:
-  - esbuild
+# Keep the supply-chain delay, but explicit + strict so "pnpm update" refuses
+# to write too-fresh versions into the lockfile instead of CI rejecting them later.
+minimumReleaseAge: 1440
+minimumReleaseAgeStrict: true
+
+allowBuilds:
+  esbuild: true
