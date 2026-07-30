@@ -214,8 +214,6 @@ Would be the same as:
 
 You can assign CSS variables with an attribute-like syntax. This works on any tag, not just `<k:my-snippet>`.
 
-Note: you can omit the `var()` if you are referencing another variable name (like `--some-variable`).
-
 <table>
 <tr>
 <th width="500px">With Sugar</th>
@@ -227,7 +225,7 @@ Note: you can omit the `var()` if you are referencing another variable name (lik
 ```html
 <k:point
   --x="10px"
-  --y="--some-variable"
+  --y="var(--some-variable)"
 />
 
 <img --padding="2rem" />

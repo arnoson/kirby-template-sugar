@@ -104,14 +104,14 @@ describe('transform', () => {
       <?= classes('article')->merge($attr) ?>
       class="red"
       --a="1rem"
-      --b="--shorthand"
+      --b="2rem"
       --c="<?= $val ?>rem"
     ></div>`
     output = `<div
       <?= classes('article')->merge($attr) ?>
       class="red"
       style="--a: 1rem;
-      --b: var(--shorthand);
+      --b: 2rem;
       --c: <?= $val ?>rem"
     ></div>`
     expect(transform(input)).toBe(output)

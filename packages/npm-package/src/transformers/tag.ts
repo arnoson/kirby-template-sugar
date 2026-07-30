@@ -34,10 +34,7 @@ const transformOpenTag = (tag: Tag) => {
     const isLastCssVar = index === lastCssVarIndex
     const isOnlyCssVar = isFirstCssVar && isLastCssVar
 
-    let value = attribute.value
-    // Allow css var shorthands: `<div --var="--fu" />` will be the same as
-    // `<div --var="var(--fu)" />`.
-    if (isCssVar) value = value?.startsWith('--') ? `var(${value})` : value
+    const value = attribute.value
 
     let text = indent
     if (isOnlyCssVar) {

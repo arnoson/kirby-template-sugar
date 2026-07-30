@@ -48,10 +48,6 @@ const transformOpenTag = (tag: Tag): string => {
     // translate them to string concatenation: `'attr' => 'id-' . $id`.
     let value = phpTagsToConcatenation(attribute.value, isInsideQuotes)
 
-    // Allow css var shorthands: `<div --var="--fu" />` will be the same as
-    // `<div --var="var(--fu)" />`.
-    if (isCssVar) value = value?.startsWith('--') ? `var(${value})` : value
-
     // Allow php var shorthands: `<div $fu />` will be the same as
     // `<div $fu="<? $fu ?>" >`.
     if (isPhpVar) value ??= name
