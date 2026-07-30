@@ -1,5 +1,9 @@
 import { Attribute, Options, Tag } from '../types'
-import { joinLines, phpTagsToConcatenation, warnAboutCssVarShorthand } from '../utils'
+import {
+  joinLines,
+  phpTagsToConcatenation,
+  warnAboutCssVarShorthand,
+} from '../utils'
 
 const match = ({ name }: Tag) => name.startsWith('k:') && name !== 'k:slot'
 

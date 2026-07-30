@@ -22,7 +22,7 @@ export const readPhp = ({ read, peek }: Stream) => {
   let buffer = ''
 
   let char: string | undefined
-  while ((char = read()) && char !== undefined) {
+  while ((char = read())) {
     buffer += char
 
     if (state === 'normal') {
@@ -98,5 +98,7 @@ export const readPhp = ({ read, peek }: Stream) => {
     }
   }
 
-  throw new Error("Couldn't parse php")
+  // A php tag without a closing `?>` is valid php: everything until the end
+  // of the file is treated as php code.
+  return buffer
 }

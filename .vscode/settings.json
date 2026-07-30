@@ -6,5 +6,8 @@
   },
   "[markdown]": {
     "editor.formatOnSave": false
+  },
+  "chat.tools.terminal.autoApprove": {
+    "npx vitest": true
   }
 }

@@ -146,4 +146,9 @@ describe('transform', () => {
     const output = '<div\n  style="--fu: 1234"\n></div>'
     expect(transform(input)).toBe(output)
   })
+
+  it('handles a php tag without a closing tag at the end of the file', () => {
+    const input = `<?php /** @var \\Kirby\\Cms\\Block $block */ ?>\n<?= $block->text();`
+    expect(() => transform(input)).not.toThrow()
+  })
 })
