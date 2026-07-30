@@ -8,6 +8,10 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arnoson/kirby-template-sugar"
+  },
   "scripts": {
     "dev": "pnpm build --watch",
     "build": "tsup ./src/index.ts --clean --dts --format esm"
