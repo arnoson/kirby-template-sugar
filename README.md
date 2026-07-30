@@ -229,6 +229,9 @@ Would be the same as:
 
 You can assign CSS variables with an attribute-like syntax. This works on any tag, not just `<k:my-snippet>`.
 
+> [!NOTE]
+> Omitting the `var()` when referencing another variable (e.g. `--y="--some-variable"`) is deprecated and will be removed in the next major version. It is still enabled by default for backwards compatibility, but you should write `--y="var(--some-variable)"` instead. In the [Vite plugin](https://github.com/arnoson/kirby-template-sugar/tree/main/packages/vite-plugin) you can already opt out early with the `cssVarShorthand: false` option.
+
 <table>
 <tr>
 <th width="500px">With Sugar</th>

@@ -19,7 +19,7 @@ export const transformFile = async (file: string, options: Options) => {
 
   if (!existsSync(dir)) await mkdir(dir, { recursive: true })
 
-  const content = transform(text)
+  const content = transform(text, options)
   try {
     const oldContent = await readFile(outFile, { encoding: 'utf8' })
     if (content !== oldContent) return writeFile(outFile, content)

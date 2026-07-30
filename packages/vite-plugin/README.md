@@ -24,3 +24,11 @@ export default {
   ],
 }
 ```
+
+## Options
+
+- `cssVarShorthand` (default: `true`): allows omitting `var()` when assigning a
+  CSS variable to another variable, e.g. `--y="--some-variable"` instead of
+  `--y="var(--some-variable)"`. This is **deprecated** and will be removed in
+  the next major version. Using the shorthand prints a deprecation warning
+  once; set this option to `false` to opt out early and silence the warning.

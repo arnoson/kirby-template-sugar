@@ -129,6 +129,18 @@ describe('transform', () => {
     expect(transform(input)).toBe(output)
   })
 
+  it('supports the deprecated CSS var shorthand by default', () => {
+    const input = `<div --y="--some-variable"></div>`
+    const output = `<div style="--y: var(--some-variable)"></div>`
+    expect(transform(input)).toBe(output)
+  })
+
+  it('does not apply the CSS var shorthand when disabled', () => {
+    const input = `<div --y="--some-variable"></div>`
+    const output = `<div style="--y: --some-variable"></div>`
+    expect(transform(input, { cssVarShorthand: false })).toBe(output)
+  })
+
   it('handles windows-style line breaks', () => {
     const input = '<div\r\n  --fu="1234"\r\n></div>'
     const output = '<div\n  style="--fu: 1234"\n></div>'

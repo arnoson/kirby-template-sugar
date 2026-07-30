@@ -1,5 +1,5 @@
-import { Attribute, Tag } from '../types'
-import { joinLines, phpTagsToConcatenation } from '../utils'
+import { Attribute, Options, Tag } from '../types'
+import { joinLines, phpTagsToConcatenation, warnAboutCssVarShorthand } from '../utils'
 
 const match = ({ name }: Tag) => name.startsWith('k:') && name !== 'k:slot'
 
@@ -8,7 +8,8 @@ const match = ({ name }: Tag) => name.startsWith('k:') && name !== 'k:slot'
 // dots as separators like in `<k:fu.bar />`.
 const normalizeSnippetName = (name: string) => name.replace(/\./g, '/')
 
-const transformOpenTag = (tag: Tag): string => {
+const transformOpenTag = (tag: Tag, options: Options = {}): string => {
+  const { cssVarShorthand = true } = options
   const [, rawName = 'default'] = tag.name.split(':')
   const name = normalizeSnippetName(rawName)
 
@@ -53,6 +54,13 @@ const transformOpenTag = (tag: Tag): string => {
     // are already inside PHP): `'attr' => 'id-<?= $id ?>'`. So we need to
     // translate them to string concatenation: `'attr' => 'id-' . $id`.
     let value = phpTagsToConcatenation(attribute.value, isInsideQuotes)
+
+    // Allow css var shorthands: `<div --var="--fu" />` will be the same as
+    // `<div --var="var(--fu)" />`.
+    if (isCssVar && cssVarShorthand && value?.startsWith('--')) {
+      warnAboutCssVarShorthand()
+      value = `var(${value})`
+    }
 
     // Allow php var shorthands: `<div $fu />` will be the same as
     // `<div $fu="<? $fu ?>" >`.

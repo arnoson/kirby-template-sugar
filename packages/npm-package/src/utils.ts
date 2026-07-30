@@ -59,3 +59,17 @@ export const changeFileExtension = (filename: string, newExtension: string) =>
     dirname(filename),
     `${basename(filename, extname(filename))}${newExtension}`,
   )
+
+let hasWarnedAboutCssVarShorthand = false
+
+export const warnAboutCssVarShorthand = () => {
+  if (hasWarnedAboutCssVarShorthand) return
+  hasWarnedAboutCssVarShorthand = true
+  console.warn(
+    '[kirby-template-sugar] Deprecation warning: CSS var shorthands like ' +
+      '`--y="--some-variable"` are deprecated and will be removed in the next ' +
+      'major version. Use `--y="var(--some-variable)"` instead and set the ' +
+      '`cssVarShorthand` option to `false` to opt out early and silence this ' +
+      'warning.',
+  )
+}
