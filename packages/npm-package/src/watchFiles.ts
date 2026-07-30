@@ -8,7 +8,7 @@ export interface WatchFilesOptions extends Options {
 
 export const watchFiles = (
   paths: string | string[],
-  options: WatchFilesOptions = {}
+  options: WatchFilesOptions = {},
 ) => {
   const handleFile = async (file: string) => {
     await transformFile(file, options)

@@ -1,22 +1,18 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-const {
-  watcher,
-  createWatcher,
-  transformFile,
-  removeCompiledFile,
-} = vi.hoisted(() => {
-  const watcher = {
-    on: vi.fn(),
-  }
+const { watcher, createWatcher, transformFile, removeCompiledFile } =
+  vi.hoisted(() => {
+    const watcher = {
+      on: vi.fn(),
+    }
 
-  return {
-    watcher,
-    createWatcher: vi.fn(() => watcher),
-    transformFile: vi.fn(async () => undefined),
-    removeCompiledFile: vi.fn(async () => undefined),
-  }
-})
+    return {
+      watcher,
+      createWatcher: vi.fn(() => watcher),
+      transformFile: vi.fn(async () => undefined),
+      removeCompiledFile: vi.fn(async () => undefined),
+    }
+  })
 
 vi.mock('chokidar', () => ({
   watch: createWatcher,
@@ -40,7 +36,11 @@ describe('watchFiles', () => {
   it('removes compiled file on unlink', async () => {
     const onTransform = vi.fn()
 
-    watchFiles('templates/**/*.kirby', { root: 'site', outDir: 'dist', onTransform })
+    watchFiles('templates/**/*.kirby', {
+      root: 'site',
+      outDir: 'dist',
+      onTransform,
+    })
 
     expect(createWatcher).toHaveBeenCalledWith('templates/**/*.kirby', {
       cwd: 'site',
