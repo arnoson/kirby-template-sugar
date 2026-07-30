@@ -2,7 +2,7 @@
   "compilerOptions": {
     "strict": true,
     "target": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "skipLibCheck": true,
     "paths": {
       "kirby-template-sugar": ["./packages/npm-package/src/index.ts"],

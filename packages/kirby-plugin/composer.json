@@ -4,8 +4,8 @@
 	},
 	"license": "MIT",
 	"require-dev": {
-		"getkirby/cms": "^3.9",
-		"pestphp/pest": "^2.4"
+		"getkirby/cms": "^5.0",
+		"pestphp/pest": "^4.0"
 	},
 	"config": {
 		"allow-plugins": {

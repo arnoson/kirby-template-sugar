@@ -2,6 +2,7 @@ name: Release
 
 permissions:
   contents: write
+  id-token: write # required for npm trusted publishing (OIDC)
 
 on:
   push:
@@ -12,19 +13,19 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
           version: latest
 
       - name: Set node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: lts/*
           cache: pnpm
           registry-url: 'https://registry.npmjs.org'
 
@@ -36,8 +37,6 @@ jobs:
 
       - name: Publish to NPM
         run: pnpm -r --filter=./packages/* publish --access public --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - run: npx changelogithub
         env:
