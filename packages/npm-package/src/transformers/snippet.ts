@@ -1,5 +1,6 @@
 import { Attribute, Options, Tag } from '../types'
 import {
+  escapePhpString,
   joinLines,
   phpTagsToConcatenation,
   warnAboutCssVarShorthand,
@@ -70,17 +71,21 @@ const transformOpenTag = (tag: Tag, options: Options = {}): string => {
     // `<div $fu="<? $fu ?>" >`.
     if (isPhpVar) value ??= name
 
+    // `name` ends up as a literal inside a PHP string (array key or style
+    // variable name), so it needs the same escaping as other literal text.
+    const escapedName = name === undefined ? name : escapePhpString(name)
+
     let text = indent
     if (isOnlyCssVar) {
-      text += `'style' => '${name}: ${value}'`
+      text += `'style' => '${escapedName}: ${value}'`
     } else if (isFirstCssVar) {
-      text += `'style' => '${name}: ${value};`
+      text += `'style' => '${escapedName}: ${value};`
     } else if (isLastCssVar) {
-      text += `${name}: ${value}',`
+      text += `${escapedName}: ${value}',`
     } else if (isCssVar) {
-      text += `${name}: ${value};`
+      text += `${escapedName}: ${value};`
     } else {
-      text += `'${name}' => ${value ?? "''"},`
+      text += `'${escapedName}' => ${value ?? "''"},`
     }
 
     return { text, line: attribute.line }

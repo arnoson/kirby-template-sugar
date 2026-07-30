@@ -151,4 +151,22 @@ describe('transform', () => {
     const input = `<?php /** @var \\Kirby\\Cms\\Block $block */ ?>\n<?= $block->text();`
     expect(() => transform(input)).not.toThrow()
   })
+
+  it('escapes single quotes in attribute values', () => {
+    const input = `<k:test fu="'bar' + 123" />`
+    const output = `<?php snippet('test', __snippetData([ 'fu' => '\\'bar\\' + 123', ])); ?>`
+    expect(transform(input)).toBe(output)
+  })
+
+  it('escapes backslashes in attribute values', () => {
+    const input = `<k:test fu="a\\\\b" />`
+    const output = `<?php snippet('test', __snippetData([ 'fu' => 'a\\\\\\\\b', ])); ?>`
+    expect(transform(input)).toBe(output)
+  })
+
+  it('escapes quotes in literal text around embedded PHP tags', () => {
+    const input = `<k:test fu="it's <?= $x ?> 'ok'" />`
+    const output = `<?php snippet('test', __snippetData([ 'fu' => 'it\\'s ' . $x . ' \\'ok\\'', ])); ?>`
+    expect(transform(input)).toBe(output)
+  })
 })

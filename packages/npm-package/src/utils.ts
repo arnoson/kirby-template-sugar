@@ -29,29 +29,59 @@ export const joinLines = (lines: { text: string; line: number }[]) => {
   return result
 }
 
+// Escape characters that are special inside a PHP single-quoted string.
+export const escapePhpString = (text: string) =>
+  text.replaceAll('\\', '\\\\').replaceAll("'", "\\'")
+
+const phpTagPattern = /<\?(?:php|=)?([\s\S]*?)\?>/gi
+
 export const phpTagsToConcatenation = (
   value: string | undefined,
   isInsideQuotes = false,
 ) => {
   if (value === undefined) return
 
-  const startsWithPhp = /^<\?(php|=)?/i.test(value)
-  const endsWithPhp = value.endsWith('?>')
+  // Split the value into literal text and embedded PHP code, so we can
+  // escape the literal parts without touching the PHP code.
+  const segments: { type: 'text' | 'code'; content: string }[] = []
+  let lastIndex = 0
+  for (const match of value.matchAll(phpTagPattern)) {
+    const start = match.index
+    if (start > lastIndex) {
+      segments.push({ type: 'text', content: value.slice(lastIndex, start) })
+    }
+    segments.push({ type: 'code', content: match[1].trim() })
+    lastIndex = start + match[0].length
+  }
+  if (lastIndex < value.length) {
+    segments.push({ type: 'text', content: value.slice(lastIndex) })
+  }
+  const textSegments = segments.filter(
+    (segment) => !(segment.type === 'text' && segment.content === ''),
+  )
+  if (textSegments.length === 0) textSegments.push({ type: 'text', content: '' })
 
-  if (!startsWithPhp && !isInsideQuotes) value = `'` + value
-  if (!endsWithPhp && !isInsideQuotes) value = value + `'`
+  if (isInsideQuotes) {
+    // The result is placed inside an outer PHP string that is already open,
+    // so text stays bare and code breaks out of/back into that string.
+    return textSegments
+      .map((segment) =>
+        segment.type === 'code'
+          ? `' . ${segment.content} . '`
+          : escapePhpString(segment.content),
+      )
+      .join('')
+      .trim()
+  }
 
-  value = value.replaceAll(/<\?(?:php|=)?/gi, (_, offset) => {
-    const isStart = offset === 0
-    return isStart && !isInsideQuotes ? '' : `' .`
-  })
-
-  value = value.replaceAll('?>', (_, offset) => {
-    const isEnd = offset === value!.length - 2
-    return isEnd && !isInsideQuotes ? '' : `. '`
-  })
-
-  return value.trim()
+  return textSegments
+    .map((segment) =>
+      segment.type === 'code'
+        ? segment.content
+        : `'${escapePhpString(segment.content)}'`,
+    )
+    .join(' . ')
+    .trim()
 }
 
 export const changeFileExtension = (filename: string, newExtension: string) =>
