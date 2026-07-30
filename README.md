@@ -98,6 +98,21 @@ Snippets can have slots or be self-closing:
 </tr>
 </table>
 
+### Nested Snippets
+
+Nested snippets use Kirby's naming convention:
+
+```php
+<k:fu/bar />
+```
+
+But since some code formatters can't handle this well, dots are also supported:
+
+```php
+<k:fu.bar />
+```
+
+
 ### Props and attributes
 
 Snippets can have `props`, which are passed directly to the snippet, and attributes, which are grouped into an `$attr` variable passed to the snippet along with the props. Props start with `$` (like `$open` and `$items`) and attributes are just specified like regular html attributes (`class`, `aria-label`).

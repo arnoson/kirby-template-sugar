@@ -14,6 +14,18 @@ describe('transform', () => {
     expect(transform(input)).toBe(output)
   })
 
+  it('handles dotted snippet names', () => {
+    const input = `<k:fu.bar></k:fu.bar>`
+    const output = `<?php snippet('fu/bar', slots: true); ?><?php endsnippet(/* fu/bar */); ?>`
+    expect(transform(input)).toBe(output)
+  })
+
+  it('handles self closing dotted snippet names', () => {
+    const input = `<k:fu.bar />`
+    const output = `<?php snippet('fu/bar'); ?>`
+    expect(transform(input)).toBe(output)
+  })
+
   it('handles attributes', () => {
     // Snippet
     let input = `<k:test

@@ -3,8 +3,14 @@ import { joinLines, phpTagsToConcatenation } from '../utils'
 
 const match = ({ name }: Tag) => name.startsWith('k:') && name !== 'k:slot'
 
+// Kirby supports nested snippets like fu/bar. With template sugar this would
+// be `<k:fu/bar />` which some php code formatters choke on. So we also allow
+// dots as separators like in `<k:fu.bar />`.
+const normalizeSnippetName = (name: string) => name.replace(/\./g, '/')
+
 const transformOpenTag = (tag: Tag): string => {
-  const [, name = 'default'] = tag.name.split(':')
+  const [, rawName = 'default'] = tag.name.split(':')
+  const name = normalizeSnippetName(rawName)
 
   const slots = tag.isSelfClosing ? '' : ', slots: true'
   if (!tag.attributes.length) return `<?php snippet('${name}'${slots}); ?>`
@@ -77,7 +83,8 @@ const transformOpenTag = (tag: Tag): string => {
 }
 
 const transformCloseTag = (tag: Tag) => {
-  const [, name] = tag.name.split(':')
+  const [, rawName = 'default'] = tag.name.split(':')
+  const name = normalizeSnippetName(rawName)
   return `<?php endsnippet(/* ${name} */); ?>`
 }
 
