@@ -1,19 +1,20 @@
 import { existsSync } from 'fs'
-import { mkdir, readFile, writeFile } from 'fs/promises'
+import { mkdir, readFile, rm, writeFile } from 'fs/promises'
 import { glob, hasMagic } from 'glob'
 import { dirname, join } from 'path'
 import { transform } from './transform'
 import { Options } from './types'
 import { changeFileExtension } from './utils'
 
+export const getOutFilePath = (file: string, options: Options) => {
+  const root = options.root ?? process.cwd()
+  return join(root, options.outDir ?? '', changeFileExtension(file, '.php'))
+}
+
 export const transformFile = async (file: string, options: Options) => {
   const root = options.root ?? process.cwd()
   const text = await readFile(join(root, file), { encoding: 'utf-8' })
-  const outFile = join(
-    root,
-    options.outDir ?? '',
-    changeFileExtension(file, '.php'),
-  )
+  const outFile = getOutFilePath(file, options)
   const dir = dirname(outFile)
 
   if (!existsSync(dir)) await mkdir(dir, { recursive: true })
@@ -25,6 +26,11 @@ export const transformFile = async (file: string, options: Options) => {
   } catch (e) {
     return writeFile(outFile, content)
   }
+}
+
+export const removeCompiledFile = async (file: string, options: Options) => {
+  const outFile = getOutFilePath(file, options)
+  await rm(outFile, { force: true })
 }
 
 export const transformFiles = async (pattern: string, options: Options) => {

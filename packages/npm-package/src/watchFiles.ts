@@ -1,5 +1,5 @@
 import { watch as createWatcher } from 'chokidar'
-import { transformFile } from './transformFile'
+import { removeCompiledFile, transformFile } from './transformFile'
 import { Options } from './types'
 
 export interface WatchFilesOptions extends Options {
@@ -15,9 +15,15 @@ export const watchFiles = (
     options.onTransform?.(file)
   }
 
+  const handleUnlink = async (file: string) => {
+    await removeCompiledFile(file, options)
+    options.onTransform?.(file)
+  }
+
   const watcher = createWatcher(paths, { cwd: options.root })
   watcher.on('change', handleFile)
   watcher.on('add', handleFile)
+  watcher.on('unlink', handleUnlink)
 
   return watcher
 }
